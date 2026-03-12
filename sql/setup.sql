@@ -1,0 +1,1 @@
+--veritabanı dosyalarını oluşturan kodlar
