@@ -44,9 +44,8 @@ document.querySelectorAll('.toggle-pass').forEach(btn => {
 onAuthStateChanged(auth, async (user) => {
     const path = window.location.pathname;
     const page = path.split("/").pop() || "index.html";
-    
+
     if (user) {
-        // Navbar düzenleme
         if (navLoginBtn) navLoginBtn.style.display = 'none';
         if (navUserProfile) {
             navUserProfile.style.display = 'flex';
@@ -60,17 +59,16 @@ onAuthStateChanged(auth, async (user) => {
             if (userSnap.exists()) {
                 const data = userSnap.data();
                 if (headerUsername) headerUsername.innerText = data.username;
-                if (headerAvatar) headerAvatar.src = data.photoURL || 'default-avatar.png';
+                if (headerAvatar) headerAvatar.src = data.photoURL || 'assets/img/default-avatar.png';
             }
         } catch (e) {
             console.error("Firestore verisi çekilirken hata:", e);
         }
 
     } else {
-        // Giriş yapılmamışsa
         if (navLoginBtn) navLoginBtn.style.display = 'block';
         if (navUserProfile) navUserProfile.style.display = 'none';
-        
+
         const protectedPages = ['library.html', 'profile.html', 'book-detail.html', 'stats.html'];
         if (protectedPages.includes(page)) {
             window.location.href = 'login.html';
@@ -90,7 +88,7 @@ if (loginForm) {
             loginBtn.innerText = "Giriş yapılıyor...";
             loginBtn.disabled = true;
             await signInWithEmailAndPassword(auth, email, pass);
-            window.location.href = 'index.html';
+            window.location.href = 'dashboard.html';
         } catch (error) {
             loginBtn.innerText = "Giriş Yap";
             loginBtn.disabled = false;
@@ -116,10 +114,8 @@ if (registerForm) {
         const submitBtn = registerForm.querySelector('.btn-primary');
         const username = document.getElementById('regUser').value;
         const email = document.getElementById('regEmail').value;
-        const password = document.getElementById('regPass')?.value || document.getElementById('loginPass')?.value; 
+        const password = document.getElementById('regPass')?.value || document.getElementById('loginPass')?.value;
         const profileFile = fileInput ? fileInput.files[0] : null;
-
-        if (!profileFile) return alert("Lütfen bir profil fotoğrafı seçin.");
 
         try {
             submitBtn.innerText = "Hesap Oluşturuluyor...";
@@ -128,13 +124,20 @@ if (registerForm) {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            const photoBase64 = await toBase64(profileFile);
+            let finalPhotoURL = 'assets/img/default-avatar.png';
 
-            await updateProfile(user, { displayName: username });
+            if (profileFile) {
+                finalPhotoURL = await toBase64(profileFile);
+            }
+
+            await updateProfile(user, {
+                displayName: username,
+                photoURL: finalPhotoURL
+            });
 
             await setDoc(doc(db, "users", user.uid), {
                 username: username,
-                photoURL: photoBase64,
+                photoURL: finalPhotoURL,
                 email: email,
                 createdAt: new Date()
             });
@@ -149,13 +152,44 @@ if (registerForm) {
     });
 }
 
-// Çıkış yapma işlemi
+// --- DROPDOWN KAPANMA SORUNU ÇÖZÜMÜ ---
+const profileDropdown = document.querySelector('.user-profile-dropdown');
+const dropdownMenu = document.querySelector('.dropdown-menu');
+
+if (profileDropdown && dropdownMenu) {
+    let timeout;
+
+    // Menü üzerine gelince kapanmayı engelle
+    profileDropdown.addEventListener('mouseenter', () => {
+        clearTimeout(timeout);
+        dropdownMenu.style.opacity = '1';
+        dropdownMenu.style.visibility = 'visible';
+        dropdownMenu.style.transform = 'translateY(0)';
+    });
+
+    // Menüden ayrılınca kısa bir süre bekle (fare menüye geçebilsin diye)
+    profileDropdown.addEventListener('mouseleave', () => {
+        timeout = setTimeout(() => {
+            dropdownMenu.style.opacity = '0';
+            dropdownMenu.style.visibility = 'hidden';
+            dropdownMenu.style.transform = 'translateY(10px)';
+        }, 300); // 300ms gecikme payı
+    });
+
+    // Menünün içine girince kapanma emrini iptal et
+    dropdownMenu.addEventListener('mouseenter', () => {
+        clearTimeout(timeout);
+    });
+}
+
+// Çıkış yapma işlemi (Dropdown içindeki buton için)
 if (logoutBtn) {
-    logoutBtn.addEventListener('click', async () => {
+    logoutBtn.addEventListener('click', async (e) => {
+        e.preventDefault(); // Sayfa atlamasını engelle
         if (confirm("Çıkış yapmak istediğinize emin misiniz?")) {
             try {
                 await signOut(auth);
-                window.location.href = 'login.html';
+                window.location.href = 'index.html';
             } catch (error) {
                 console.error("Çıkış hatası:", error);
             }

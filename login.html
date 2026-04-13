@@ -17,15 +17,26 @@
             <a href="index.html" class="nav-logo">Satır Arası</a>
             <div class="nav-links">
                 <a href="index.html"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
-                <a href="library.html"><i class="fa-solid fa-book"></i> Kitaplığım</a>
+                <a href="library.html"><i class="fa-solid fa-book"></i> Kitaplar</a>
             </div>
         </div>
         <div class="nav-right">
             <a href="login.html" class="btn-login-nav" id="navLoginBtn">Giriş Yap</a>
-            <div class="user-profile" id="navUserProfile" style="display:none;">
-                <img id="headerAvatar" src="" alt="Profil">
-                <span id="headerUsername"></span>
-                <i class="fa-solid fa-arrow-right-from-bracket logout-icon" id="logoutBtn" title="Çıkış Yap"></i>
+
+            <div class="user-profile-dropdown" id="navUserProfile" style="display:none;">
+                <div class="profile-trigger">
+                    <img id="headerAvatar" src="assets/img/default-avatar.png" alt="Profil">
+                    <span id="headerUsername">Kullanıcı</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
+                <div class="dropdown-menu">
+                    <a href="my-library.html"><i class="fa-solid fa-book"></i> Kitaplığım</a>
+                    <a href="profile.html"><i class="fa-solid fa-user-gear"></i> Profil Ayarları</a>
+                    <hr class="dropdown-divider">
+                    <a href="#" id="logoutBtn" class="logout-link"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        Çıkış Yap</a>
+                </div>
             </div>
         </div>
     </nav>

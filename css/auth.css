@@ -1,15 +1,15 @@
 body.auth-page {
     background: url('../img/login-bg.jpeg') no-repeat center center fixed;
     background-size: cover;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    overflow: hidden;
+    justify-content: flex-start;
+    overflow-y: auto;
+    padding-top: 120px;
 }
 
-/* glass container */
 .glass-container {
     background: rgba(255, 255, 255, 0.65);
     backdrop-filter: blur(15px);
@@ -22,18 +22,12 @@ body.auth-page {
     border: 1px solid rgba(255, 255, 255, 0.4);
     text-align: center;
     animation: fadeIn 0.8s ease-out;
+    margin-bottom: 60px;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .brand-title {
@@ -49,7 +43,7 @@ body.auth-page {
     font-weight: 400;
 }
 
-/* form elemanları */
+/* Form Elemanları */
 .input-group {
     position: relative;
     margin-bottom: 22px;
@@ -86,10 +80,8 @@ body.auth-page {
     transform: translateY(-50%);
     cursor: pointer;
     color: #999;
-    z-index: 10;
 }
 
-/* butonlar - footer */
 .btn-primary {
     width: 100%;
     padding: 14px;
@@ -121,15 +113,9 @@ body.auth-page {
     text-decoration: none;
     font-weight: 700;
     margin-left: 8px;
-    transition: 0.3s;
 }
 
-.auth-footer a:hover {
-    color: #8fb3b8;
-    text-decoration: underline;
-}
-
-/* dosya yükleme - sadece register'da */
+/* Register sayfası için fotoğraf yükleme alanı */
 .file-upload-container {
     margin-bottom: 25px;
     text-align: left;
@@ -146,15 +132,4 @@ body.auth-page {
     padding: 15px;
     cursor: pointer;
     color: #4a6b6f;
-}
-
-#regPic {
-    display: none;
-}
-
-.file-name {
-    display: block;
-    text-align: center;
-    font-size: 0.8rem;
-    margin-top: 8px;
 }
