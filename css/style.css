@@ -55,7 +55,7 @@
 }
 
 .nav-links a i {
-    color: #4a6b6f; 
+    color: #4a6b6f;
     font-size: 1.1rem;
     transition: 0.3s ease;
 }
@@ -126,6 +126,111 @@
 }
 
 @media (max-width: 600px) {
-    .main-nav { padding: 0 20px; }
-    .nav-links { display: none; }
+    .main-nav {
+        padding: 0 20px;
+    }
+
+    .nav-links {
+        display: none;
+    }
+}
+
+/* Ana Footer Tasarımı */
+.main-footer {
+    background: rgba(255, 255, 255, 0.7);
+    /* Cam efekti için hafif transparan */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 50px 0 20px;
+    margin-top: 50px;
+    width: 100%;
+    color: #2c3e50;
+}
+
+.footer-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 250px;
+}
+
+.footer-logo {
+    font-family: 'Georgia', serif;
+    color: #4a6b6f;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.footer-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #4a6b6f;
+    position: relative;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+    text-decoration: none;
+    color: #555;
+    transition: 0.3s;
+}
+
+.footer-section ul li a:hover {
+    color: #4a6b6f;
+    padding-left: 5px;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.social-links a {
+    color: #4a6b6f;
+    font-size: 1.3rem;
+    transition: 0.3s;
+}
+
+.social-links a:hover {
+    transform: translateY(-3px);
+    color: #3a5659;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    font-size: 0.9rem;
+    color: #777;
+}
+
+/* Mobil için düzenleme */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
 }

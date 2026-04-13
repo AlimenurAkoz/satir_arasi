@@ -1,1 +1,167 @@
-<!-- kullanıcı profili -->
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil - Satır Arası</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="glass-bg profile-page-body">
+
+    <nav class="main-nav">
+        <div class="nav-left">
+            <a href="index.html" class="nav-logo">Satır Arası</a>
+            <div class="nav-links">
+                <a href="index.html"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+                <a href="library.html"><i class="fa-solid fa-book"></i> Kitaplığım</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="login.html" class="btn-login-nav" id="navLoginBtn">Giriş Yap</a>
+            <div class="user-profile" id="navUserProfile" style="display:none;">
+                <img id="headerAvatar" src="" alt="Profil">
+                <span id="headerUsername"></span>
+                <i class="fa-solid fa-arrow-right-from-bracket logout-icon" id="logoutBtn" title="Çıkış Yap"></i>
+            </div>
+        </div>
+    </nav>
+    <div id="loader" class="loader-container" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="container profile-wrapper">
+        <div class="row">
+            <aside class="col-4 glass-card sidebar">
+                <div class="profile-info text-center">
+                    <div class="avatar-wrapper">
+                        <img src="/img/default-avatar-icon.jpg" id="profile-img-preview" alt="Profil">
+                        <label for="avatar-input" class="edit-icon">✎</label>
+                        <input type="file" id="avatar-input" hidden accept="image/*">
+                    </div>
+                    <h2 id="display-name-sidebar">Kullanıcı Adı</h2>
+                    <p id="user-email-sidebar">email@example.com</p>
+                </div>
+
+                <nav class="profile-nav">
+                    <button class="nav-btn active" data-target="edit-profile">
+                        <i>👤</i> Profili Düzenle
+                    </button>
+                    <button class="nav-btn" data-target="change-password">
+                        <i>🔑</i> Şifre Değiştir
+                    </button>
+                    <button class="nav-btn" data-target="reading-goals">
+                        <i>📚</i> Okuma Hedefleri
+                    </button>
+                    <button class="nav-btn" data-target="account-settings">
+                        <i>⚙️</i> Hesap Ayarları
+                    </button>
+                    <hr class="glass-hr">
+                    <button id="logout-btn" class="nav-btn logout">
+                        <i>🚪</i> Çıkış Yap
+                    </button>
+                </nav>
+            </aside>
+
+            <main class="col-8 glass-card content-area">
+                <section id="edit-profile" class="settings-section active">
+                    <h3>Profili Düzenle</h3>
+                    <form id="update-profile-form">
+                        <div class="input-group">
+                            <label>Yeni Kullanıcı Adı</label>
+                            <input type="text" id="new-display-name" placeholder="Adınızı giriniz">
+                        </div>
+                        <button type="submit" class="glass-btn">Güncelle</button>
+                    </form>
+                </section>
+
+                <section id="change-password" class="settings-section">
+                    <h3>Şifre Değiştir</h3>
+                    <form id="update-password-form">
+                        <div class="input-group">
+                            <label>Mevcut Şifre</label>
+                            <input type="password" id="current-password" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Yeni Şifre</label>
+                            <input type="password" id="new-password" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Yeni Şifre (Tekrar)</label>
+                            <input type="password" id="confirm-new-password" required>
+                            <span id="password-match-error" class="error-text" style="display: none;">Şifreler
+                                uyuşmuyor!</span>
+                        </div>
+                        <button type="submit" id="update-password-btn" class="glass-btn">Şifreyi Güncelle</button>
+                    </form>
+                </section>
+
+                <section id="reading-goals" class="settings-section">
+                    <h3>Okuma Hedefleri</h3>
+                    <form id="reading-goals-form">
+                        <div class="input-group">
+                            <label>Yıllık Kitap Hedefi</label>
+                            <input type="number" id="annual-goal" min="1">
+                        </div>
+                        <button type="submit" class="glass-btn">Hedefi Kaydet</button>
+                    </form>
+                </section>
+
+                <section id="account-settings" class="settings-section">
+                    <h3>Hesap Ayarları</h3>
+                    <div class="danger-zone">
+                        <p>Tüm verileri silmek istediğinize emin misiniz?</p>
+                        <button id="delete-account-btn" class="danger-btn">Hesabı Kalıcı Olarak Sil</button>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section about">
+                <h2 class="footer-logo">Satır Arası</h2>
+                <p>"Her satır arası yeni bir dünya."</p>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-github"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section links">
+                <h3>Hızlı Menü</h3>
+                <ul>
+                    <li><a href="index.html">Ana Sayfa</a></li>
+                    <li><a href="library.html">Kitaplığım</a></li>
+                    <li><a href="profile.html">Profilim</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section contact">
+                <h3>İletişim</h3>
+                <p><i class="fa-solid fa-envelope"></i> destek@satirarasi.com</p>
+                <p><i class="fa-solid fa-location-dot"></i> Mars</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Satır Arası | Tüm Hakları Saklıdır.
+        </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <script type="module" src="js/firebase/firebaseConfig.js"></script>
+    <!-- <script src="js/auth/auth.js"></script> -->
+    <script src="js/utils/notifications.js"></script>
+    <script src="js/utils/loader.js"></script>
+    <script type="module" src="js/profile/profile-logic.js"></script>
+</body>
+
+</html>

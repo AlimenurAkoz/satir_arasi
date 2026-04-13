@@ -1,0 +1,320 @@
+:root {
+    --primary-color: #4a6b6f;
+    --primary-hover: #3a5659;
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    --input-bg: rgba(255, 255, 255, 0.8);
+    --text-dark: #2c3e50;
+    --text-muted: #555;
+    --danger-color: #c0392b;
+    --danger-hover: #a93226;
+}
+
+/* 1. Sayfa Temeli */
+.glass-bg {
+    background: url('../img/login-bg.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 120px 20px 40px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+}
+
+/* 2. Layout (Düzen) */
+.profile-wrapper {
+    max-width: 1100px;
+    width: 100%;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.row {
+    display: flex;
+    gap: 30px;
+    align-items: stretch;
+}
+
+/* 3. Kart Tasarımı */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+    color: var(--text-dark);
+}
+
+/* 4. Sol Sidebar */
+.sidebar {
+    flex: 3;
+    padding: 50px 30px;
+    text-align: center;
+    height: fit-content;
+}
+
+.avatar-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 25px;
+}
+
+#profile-img-preview {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.edit-icon {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: var(--primary-color);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.edit-icon:hover {
+    background: var(--primary-hover);
+    transform: scale(1.1) rotate(15deg);
+}
+
+#display-name-sidebar {
+    font-family: 'Georgia', serif;
+    font-size: 1.8rem;
+    color: var(--text-dark);
+    margin: 15px 0 5px;
+    word-wrap: break-word;
+}
+
+#user-email-sidebar {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 35px;
+}
+
+/* 5. Navigasyon Butonları */
+.profile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.nav-btn {
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    color: var(--text-dark);
+    padding: 16px 20px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: translateX(8px);
+}
+
+.nav-btn.active {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 5px 15px rgba(74, 107, 111, 0.3);
+}
+
+.nav-btn.logout {
+    margin-top: 15px;
+    color: var(--danger-color);
+    border-color: rgba(192, 57, 43, 0.1);
+}
+
+/* 6. Sağ İçerik Alanı */
+.content-area {
+    flex: 7;
+    padding: 60px;
+    min-height: 600px;
+}
+
+h3 {
+    font-family: 'Georgia', serif;
+    font-size: 2.2rem;
+    color: var(--text-dark);
+    margin-bottom: 40px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.03);
+    padding-bottom: 20px;
+}
+
+/* 7. Form Elemanları */
+.input-group {
+    margin-bottom: 25px;
+}
+
+.input-group label {
+    display: block;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: var(--input-bg);
+    outline: none;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.input-group input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(74, 107, 111, 0.1);
+    background: #fff;
+}
+
+/* Hata Mesajları */
+.error-text {
+    color: var(--danger-color);
+    font-size: 0.85rem;
+    margin-top: 8px;
+    display: block;
+    font-weight: 600;
+    animation: fadeIn 0.3s ease-in;
+}
+
+input.input-error {
+    border-color: var(--danger-color) !important;
+    background: rgba(192, 57, 43, 0.05) !important;
+}
+
+/* 8. Butonlar */
+.glass-btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 35px;
+    background: var(--primary-color);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(74, 107, 111, 0.2);
+    margin-top: 10px;
+}
+
+.glass-btn:hover:not(:disabled) {
+    background: var(--primary-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(74, 107, 111, 0.3);
+}
+
+.glass-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* 9. Tehlikeli Bölge */
+.danger-zone {
+    margin-top: 50px;
+    padding: 30px;
+    background: rgba(192, 57, 43, 0.04);
+    border: 2px dashed rgba(192, 57, 43, 0.15);
+    border-radius: 20px;
+    text-align: center;
+}
+
+.danger-zone p {
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
+
+.danger-btn {
+    background: var(--danger-color);
+    color: white;
+    border: none;
+    padding: 14px 35px;
+    border-radius: 30px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.danger-btn:hover {
+    background: var(--danger-hover);
+    transform: scale(1.05);
+}
+
+/* 10. Sekme Geçişleri ve Animasyonlar */
+.settings-section {
+    display: none;
+}
+
+.settings-section.active {
+    display: block;
+    animation: fadeInSlide 0.6s ease-out;
+}
+
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* 11. Responsive (Mobil) */
+@media (max-width: 992px) {
+    .row {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        flex: none;
+        width: 100%;
+    }
+
+    .content-area {
+        flex: none;
+        width: 100%;
+        min-height: auto;
+        padding: 40px 25px;
+    }
+
+    .glass-bg {
+        padding-top: 100px;
+    }
+}
