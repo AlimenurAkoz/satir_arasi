@@ -1,1 +1,126 @@
-<!--kitap detay-->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitap Detayı - Satır Arası</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/detail.css">
+</head>
+<body>
+
+     <nav class="main-nav">
+        <div class="nav-left">
+            <a href="index.html" class="nav-logo">Satır Arası</a>
+            <div class="nav-links">
+                <a href="index.html"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+                <a href="library.html"><i class="fa-solid fa-book"></i> Kitaplığım</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="login.html" class="btn-login-nav" id="navLoginBtn">Giriş Yap</a>
+            <div class="user-profile" id="navUserProfile" style="display:none;">
+                <img id="headerAvatar" src="" alt="Profil">
+                <span id="headerUsername"></span>
+                <i class="fa-solid fa-arrow-right-from-bracket logout-icon" id="logoutBtn" title="Çıkış Yap"></i>
+            </div>
+        </div>
+    </nav>
+
+    <main class="book-detail-container">
+        
+        <div class="book-image">
+            <img src="https://books.google.com/books/content?id=v3Z7DwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api" alt="Satranç Kitap Kapağı" id="bookCover" width="250">
+        </div>
+
+        <div class="book-info">
+            <h1 id="bookTitle">Satranç</h1>
+            <h2 id="bookAuthor">Stefan Zweig</h2>
+
+            <div class="status-selector" id="authRequiredStatus">
+                <label for="readingStatus">Okuma Durumu:</label>
+                <select id="readingStatus">
+                    <option value="okunacak">Okunacak</option>
+                    <option value="okunuyor">Okunuyor</option>
+                    <option value="okudum">Okudum</option>
+                </select>
+            </div>
+
+            <div class="book-summary">
+                <h3>Kitap Özeti</h3>
+                <p id="bookDescription">
+                    Dünya edebiyatının en sarsıcı metinlerinden biri olan Satranç, insanın baskı altındaki ruh halini ve direnme gücünü muazzam bir derinlikle işler. Dr. B.'nin tecrit altındaki mücadelesi, sadece bir oyun değil, bir varoluş savaşına dönüşür.
+                    Dünya edebiyatının en sarsıcı metinlerinden biri olan Satranç, insanın baskı altındaki ruh halini ve direnme gücünü muazzam bir derinlikle işler. Dr. B.'nin tecrit altındaki mücadelesi, sadece bir oyun değil, bir varoluş savaşına dönüşür.
+                    Dünya edebiyatının en sarsıcı metinlerinden biri olan Satranç, insanın baskı altındaki ruh halini ve direnme gücünü muazzam bir derinlikle işler. Dr. B.'nin tecrit altındaki mücadelesi, sadece bir oyun değil, bir varoluş savaşına dönüşür.
+                    Dünya edebiyatının en sarsıcı metinlerinden biri olan Satranç, insanın baskı altındaki ruh halini ve direnme gücünü muazzam bir derinlikle işler. Dr. B.'nin tecrit altındaki mücadelesi, sadece bir oyun değil, bir varoluş savaşına dönüşür.
+                    Dünya edebiyatının en sarsıcı metinlerinden biri olan Satranç, insanın baskı altındaki ruh halini ve direnme gücünü muazzam bir derinlikle işler. Dr. B.'nin tecrit altındaki mücadelesi, sadece bir oyun değil, bir varoluş savaşına dönüşür.
+                    Dünya edebiyatının en sarsıcı metinlerinden biri olan Satranç, insanın baskı altındaki ruh halini ve direnme gücünü muazzam bir derinlikle işler. Dr. B.'nin tecrit altındaki mücadelesi, sadece bir oyun değil, bir varoluş savaşına dönüşür.
+                    Dünya edebiyatının en sarsıcı metinlerinden biri olan Satranç, insanın baskı altındaki ruh halini ve direnme gücünü muazzam bir derinlikle işler. Dr. B.'nin tecrit altındaki mücadelesi, sadece bir oyun değil, bir varoluş savaşına dönüşür.
+
+                    Dünya edebiyatının en sarsıcı metinlerinden biri olan Satranç, insanın baskı altındaki ruh halini ve direnme gücünü muazzam bir derinlikle işler. Dr. B.'nin tecrit altındaki mücadelesi, sadece bir oyun değil, bir varoluş savaşına dönüşür.Dünya edebiyatının en sarsıcı metinlerinden biri olan Satranç, insanın baskı altındaki ruh halini ve direnme gücünü muazzam bir derinlikle işler. Dr. B.'nin tecrit altındaki mücadelesi, sadece bir oyun değil, bir varoluş savaşına dönüşür.
+                    Dünya edebiyatının en sarsıcı metinlerinden biri olan Satranç, insanın baskı altındaki ruh halini ve direnme gücünü muazzam bir derinlikle işler. Dr. B.'nin tecrit altındaki mücadelesi, sadece bir oyun değil, bir varoluş savaşına dönüşür.
+                </p>
+            </div>
+            
+        </div>
+
+        <div class="review-section" id="reviewSection">
+            <h3>Kişisel Değerlendirme</h3>
+            
+            <div class="stars" id="starRating">
+                <p>Puanınız: <span style="cursor:pointer">⭐</span><span style="cursor:pointer">⭐</span><span style="cursor:pointer">⭐</span><span style="cursor:pointer">⭐</span><span style="cursor:pointer">⭐</span></p>
+            </div>
+
+            <div class="note-area">
+                <label for="userNote">Kitap Notları:</label>
+                <br>
+                <textarea id="userNote" rows="5" cols="40" maxlength="2000" placeholder="Bu kitap hakkında ne düşünüyorsunuz? (Kendinize notlar...)"></textarea>
+                
+                <div id="charCounter">0 / 2000</div>
+            </div>
+            <br>
+            <button id="saveReviewBtn" class="btn-primary">Değişiklikleri Kaydet</button>
+        </div>
+
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section about">
+                <h2 class="footer-logo">Satır Arası</h2>
+                <p>"Her satır arası yeni bir dünya."</p>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-github"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section links">
+                <h3>Hızlı Menü</h3>
+                <ul>
+                    <li><a href="index.html">Ana Sayfa</a></li>
+                    <li><a href="library.html">Kitaplığım</a></li>
+                    <li><a href="profile.html">Profilim</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section contact">
+                <h3>İletişim</h3>
+                <p><i class="fa-solid fa-envelope"></i> destek@satirarasi.com</p>
+                <p><i class="fa-solid fa-location-dot"></i> Mars</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Satır Arası | Tüm Hakları Saklıdır.
+        </div>
+    </footer>
+
+    <script type="module" src="js/auth/auth.js"></script>
+    <script type="module" src="js/books/bookDetail.js"></script>
+    
+</body>
+</html>
