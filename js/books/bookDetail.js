@@ -9,11 +9,10 @@ const reviewSection = document.getElementById('reviewSection');
 // --- KULLANICI OTURUM KONTROLÜ ---
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        // KULLANICI GİRİŞ YAPMIŞ: Senin yazdığın özellikleri aktif et
-        console.log("Aktif Kullanıcı:", user.email);
+        // Kullanıcı varsa detay özelliklerini başlat
         initializeInteractiveFeatures();
     } else {
-        // KULLANICI GİRİŞ YAPMAMIŞ: Değişiklik alanlarını gizle ve kilit ekranı göster
+        // Kullanıcı yoksa detay kısımlarını kilitle
         if (authRequiredStatus) {
             authRequiredStatus.style.display = 'none';
         }
@@ -33,8 +32,7 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-
-// --- KİTAP DETAY ETKİLEŞİMLERİ (Sadece giriş yapanlar için çalışır) ---
+// --- KİTAP DETAY ETKİLEŞİMLERİ ---
 function initializeInteractiveFeatures() {
     
     // 1. Yıldız Puanlama Mantığı
