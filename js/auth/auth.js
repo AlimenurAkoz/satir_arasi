@@ -42,10 +42,14 @@ document.querySelectorAll('.toggle-pass').forEach(btn => {
 
 // Oturum takibi
 onAuthStateChanged(auth, async (user) => {
-    const path = window.location.pathname;
-    const page = path.split("/").pop() || "index.html";
+    // Mevcut sayfa yolunu küçük harfe çevirerek al
+    const currentPath = window.location.pathname.toLowerCase();
+    
+    const protectedPages = ['my-library.html', 'profile.html', 'stats.html', 'dashboard.html'];
+    
+    const isProtected = protectedPages.some(page => currentPath.endsWith(page));
 
-    if (user) {
+    if (user) {// Giriş yapılmış     
         if (navLoginBtn) navLoginBtn.style.display = 'none';
         if (navUserProfile) {
             navUserProfile.style.display = 'flex';
@@ -59,19 +63,25 @@ onAuthStateChanged(auth, async (user) => {
             if (userSnap.exists()) {
                 const data = userSnap.data();
                 if (headerUsername) headerUsername.innerText = data.username;
-                if (headerAvatar) headerAvatar.src = data.photoURL || 'assets/img/default-avatar.png';
+                if (headerAvatar) headerAvatar.src = data.photoURL || 'img/default-avatar-icon.jpg';
             }
         } catch (e) {
             console.error("Firestore verisi çekilirken hata:", e);
         }
 
-    } else {
+        // Kullanıcı giriş yapmışken tekrar login veya register'a gitmeye çalışırsa ana sayfaya at
+        if (currentPath.includes("login.html") || currentPath.includes("register.html")) {
+            window.location.replace("dashboard.html");
+        }
+
+    } else {// Giriş yapılmamış
         if (navLoginBtn) navLoginBtn.style.display = 'block';
         if (navUserProfile) navUserProfile.style.display = 'none';
 
-        const protectedPages = ['library.html', 'profile.html', 'book-detail.html', 'stats.html'];
-        if (protectedPages.includes(page)) {
-            window.location.href = 'login.html';
+        // Eğer kullanıcı giriş yapmamışsa ve korumalı bir sayfadaysa ŞAK diye login'e at
+        if (isProtected) {
+            console.warn("Yetkisiz erişim denemesi! Login sayfasına yönlendiriliyorsunuz.");
+            window.location.replace('login.html');
         }
     }
 });
@@ -124,7 +134,7 @@ if (registerForm) {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            let finalPhotoURL = 'assets/img/default-avatar.png';
+            let finalPhotoURL = 'img/default-avatar-icon.jpg';
 
             if (profileFile) {
                 finalPhotoURL = await toBase64(profileFile);
@@ -142,7 +152,7 @@ if (registerForm) {
                 createdAt: new Date()
             });
 
-            window.location.href = 'index.html';
+            window.location.href = 'dashboard.html';
         } catch (error) {
             submitBtn.innerText = "Kayıt Ol";
             submitBtn.disabled = false;
@@ -152,7 +162,7 @@ if (registerForm) {
     });
 }
 
-// --- DROPDOWN KAPANMA SORUNU ÇÖZÜMÜ ---
+// Dropdown açık kalma ve kapanma
 const profileDropdown = document.querySelector('.user-profile-dropdown');
 const dropdownMenu = document.querySelector('.dropdown-menu');
 
@@ -167,7 +177,7 @@ if (profileDropdown && dropdownMenu) {
         dropdownMenu.style.transform = 'translateY(0)';
     });
 
-    // Menüden ayrılınca kısa bir süre bekle (fare menüye geçebilsin diye)
+    // Menüden ayrılınca kısa bir süre bekle
     profileDropdown.addEventListener('mouseleave', () => {
         timeout = setTimeout(() => {
             dropdownMenu.style.opacity = '0';
@@ -182,7 +192,7 @@ if (profileDropdown && dropdownMenu) {
     });
 }
 
-// Çıkış yapma işlemi (Dropdown içindeki buton için)
+// Çıkış yapma işlemi
 if (logoutBtn) {
     logoutBtn.addEventListener('click', async (e) => {
         e.preventDefault(); // Sayfa atlamasını engelle

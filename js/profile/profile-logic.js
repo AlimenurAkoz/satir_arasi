@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const errorMsg = document.getElementById('password-match-error');
     const updatePassBtn = document.getElementById('update-password-btn');
 
-    // --- 1. SEKMELER ARASI GEÇİŞ ---
+    // Sekmeler arası geçiş
     navButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             const targetId = btn.getAttribute('data-target');
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- 2. ŞİFRE DOĞRULAMA KONTROLÜ ---
+    // Şifre doğrulama
     function checkPasswords() {
         const p1 = newPassInput.value;
         const p2 = confirmPassInput.value;
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         confirmPassInput.addEventListener('input', checkPasswords);
     }
 
-    // --- 3. FIREBASE VERİLERİNİ ÇEKME ---
+    // Firebase'den veri çekme
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             try {
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- 4. PROFİL GÜNCELLEME İŞLEMİ ---
+    // Profil güncelleme
     const updateProfileForm = document.getElementById('update-profile-form');
     if (updateProfileForm) {
         updateProfileForm.addEventListener('submit', async (e) => {
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 5. ŞİFRE GÜNCELLEME İŞLEMİ ---
+    // Şifre güncelleme
     const updatePasswordForm = document.getElementById('update-password-form');
     if (updatePasswordForm) {
         updatePasswordForm.addEventListener('submit', async (e) => {
@@ -165,19 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 6. ÇIKIŞ YAPMA ---
-    const handleLogout = async () => {
-        if (confirm("Çıkış yapmak istediğinize emin misiniz?")) {
-            try {
-                await signOut(auth);
-                window.location.href = 'login.html';
-            } catch (error) {
-                console.error("Çıkış hatası:", error);
-            }
-        }
-    };
-
-    // --- 7. HESABI KALICI OLARAK SİLME ---
+    // Hesabı kalıcı olarak silme
     const deleteAccountBtn = document.getElementById('delete-account-btn');
     if (deleteAccountBtn) {
         deleteAccountBtn.addEventListener('click', async () => {

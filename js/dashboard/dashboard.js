@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const headerAvatar = document.getElementById('headerAvatar');
     const navUserProfile = document.getElementById('navUserProfile');
     const navLoginBtn = document.getElementById('navLoginBtn');
-    const welcomeNameSpan = document.querySelector('.user-name-span'); // Dashboard'daki "Hoş geldin, X" alanı için
+    const welcomeNameSpan = document.querySelector('.user-name-span');
     const logoutBtn = document.getElementById('logoutBtn');
 
     onAuthStateChanged(auth, async (user) => {
@@ -21,16 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     const data = userSnap.data();
                     const userName = data.username; // Firestore'daki alan adı 'username' olmalı
 
-                    // Navbar ismini güncelle
                     if (headerUsername) headerUsername.innerText = userName;
 
-                    // Hoş geldin mesajını güncelle
                     const welcomeSpan = document.querySelector('.user-name-span');
                     if (welcomeSpan) {
                         welcomeSpan.innerText = userName;
                     }
 
-                    // Profil fotoğrafını yükle
                     if (headerAvatar) {
                         headerAvatar.src = data.photoURL || 'assets/img/default-avatar.png';
                     }
@@ -43,24 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- ÇIKIŞ YAPMA İŞLEMİ ---
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            if (confirm("Çıkış yapmak istediğinize emin misiniz?")) {
-                try {
-                    await signOut(auth);
-                    window.location.href = 'index.html';
-                } catch (error) {
-                    console.error("Çıkış hatası:", error);
-                    alert("Çıkış yapılırken bir hata oluştu.");
-                }
-            }
-        });
-    }
-
-    // --- DROPDOWN GÖRSEL ETKİLEŞİM (Hover için yedek kontrol) ---
-    // CSS'te hover zaten tanımlı olsa da, mobil veya JS geçişleri için auth.js'deki mantığı koruyoruz.
+    // Dropdown menü işlemleri
     const profileDropdown = document.querySelector('.user-profile-dropdown');
     const dropdownMenu = document.querySelector('.dropdown-menu');
 
