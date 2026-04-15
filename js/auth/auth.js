@@ -40,22 +40,38 @@ document.querySelectorAll('.toggle-pass').forEach(btn => {
     });
 });
 
+const navHomeLink = document.getElementById('navHomeLink');
+const navLogo = document.querySelector('.nav-logo');
+const navStatsLink = document.getElementById('navStatsLink');
+const navContactLink = document.getElementById('navContactLink');
+const navBooksLink = document.getElementById('navBooksLink');
+
 // Oturum takibi
 onAuthStateChanged(auth, async (user) => {
-    // Mevcut sayfa yolunu küçük harfe çevirerek al
     const currentPath = window.location.pathname.toLowerCase();
     
     const protectedPages = ['my-library.html', 'profile.html', 'stats.html', 'dashboard.html'];
-    
     const isProtected = protectedPages.some(page => currentPath.endsWith(page));
 
-    if (user) {// Giriş yapılmış     
+    if (user) {// Giriş yapılmış
         if (navLoginBtn) navLoginBtn.style.display = 'none';
         if (navUserProfile) {
             navUserProfile.style.display = 'flex';
             navUserProfile.style.alignItems = 'center';
         }
 
+        // İstatistikler ve Bize Ulaşın butonlarını göster
+        if (navStatsLink) navStatsLink.style.display = 'flex';
+        if (navContactLink) navContactLink.style.display = 'flex';
+
+        if (navHomeLink) {
+            navHomeLink.href = 'dashboard.html';
+        }
+        if (navLogo) {
+            navLogo.href = 'dashboard.html';
+        }
+
+        // Kullanıcı verilerini Firestore'dan çek
         try {
             const userRef = doc(db, "users", user.uid);
             const userSnap = await getDoc(userRef);
@@ -69,16 +85,28 @@ onAuthStateChanged(auth, async (user) => {
             console.error("Firestore verisi çekilirken hata:", e);
         }
 
-        // Kullanıcı giriş yapmışken tekrar login veya register'a gitmeye çalışırsa ana sayfaya at
+        // Giriş yapmışken login/register'a giderse Dashboard'a at
         if (currentPath.includes("login.html") || currentPath.includes("register.html")) {
             window.location.replace("dashboard.html");
         }
 
     } else {// Giriş yapılmamış
+        
         if (navLoginBtn) navLoginBtn.style.display = 'block';
         if (navUserProfile) navUserProfile.style.display = 'none';
 
-        // Eğer kullanıcı giriş yapmamışsa ve korumalı bir sayfadaysa ŞAK diye login'e at
+        // İstatistikler ve Bize Ulaşın butonlarını gizle
+        if (navStatsLink) navStatsLink.style.display = 'none';
+        if (navContactLink) navContactLink.style.display = 'none';
+
+        if (navHomeLink) {
+            navHomeLink.href = 'index.html';
+        }
+        if (navLogo) {
+            navLogo.href = 'index.html';
+        }
+
+        // Eğer kullanıcı giriş yapmamışsa ve korumalı bir sayfadaysa Login'e at
         if (isProtected) {
             console.warn("Yetkisiz erişim denemesi! Login sayfasına yönlendiriliyorsunuz.");
             window.location.replace('login.html');
@@ -195,7 +223,7 @@ if (profileDropdown && dropdownMenu) {
 // Çıkış yapma işlemi
 if (logoutBtn) {
     logoutBtn.addEventListener('click', async (e) => {
-        e.preventDefault(); // Sayfa atlamasını engelle
+        e.preventDefault();
         if (confirm("Çıkış yapmak istediğinize emin misiniz?")) {
             try {
                 await signOut(auth);

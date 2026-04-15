@@ -14,10 +14,12 @@
 
     <nav class="main-nav">
         <div class="nav-left">
-            <a href="index.html" class="nav-logo">Satır Arası</a>
+            <a href="index.html" class="nav-logo" id="navLogo">Satır Arası</a>
             <div class="nav-links">
-                <a href="dashboard.html"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
-                <a href="library.html"><i class="fa-solid fa-book"></i> Kitaplığım</a>
+                <a href="index.html" id="navHomeLink"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+                <a href="library.html" id="navBooksLink"><i class="fa-solid fa-book"></i> Kitaplar</a>
+                <a href="stats.html" id="navStatsLink"><i class="fas fa-chart-line"></i> İstatistiklerim</a>
+                <a href="contact.html" id="navContactLink"><i class="fas fa-envelope"></i> Bize Ulaşın</a>
             </div>
         </div>
         <div class="nav-right">
@@ -64,9 +66,6 @@
                     <button class="nav-btn" data-target="change-password">
                         <i>🔑</i> Şifre Değiştir
                     </button>
-                    <button class="nav-btn" data-target="reading-goals">
-                        <i>📚</i> Okuma Hedefleri
-                    </button>
                     <button class="nav-btn" data-target="account-settings">
                         <i>⚙️</i> Hesap Ayarları
                     </button>
@@ -110,17 +109,6 @@
                     </form>
                 </section>
 
-                <section id="reading-goals" class="settings-section">
-                    <h3>Okuma Hedefleri</h3>
-                    <form id="reading-goals-form">
-                        <div class="input-group">
-                            <label>Yıllık Kitap Hedefi</label>
-                            <input type="number" id="annual-goal" min="1">
-                        </div>
-                        <button type="submit" class="glass-btn">Hedefi Kaydet</button>
-                    </form>
-                </section>
-
                 <section id="account-settings" class="settings-section">
                     <h3>Hesap Ayarları</h3>
                     <div class="danger-zone">
@@ -148,8 +136,8 @@
                 <h3>Hızlı Menü</h3>
                 <ul>
                     <li><a href="index.html">Ana Sayfa</a></li>
-                    <li><a href="library.html">Kitaplığım</a></li>
-                    <li><a href="profile.html">Profilim</a></li>
+                    <li><a href="library.html">Kitaplar</a></li>
+                    <li><a href="contact.html">Bize Ulaşın</a></li>
                 </ul>
             </div>
 

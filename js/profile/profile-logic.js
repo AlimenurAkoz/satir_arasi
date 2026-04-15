@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const navLoginBtn = document.getElementById('navLoginBtn');
 
                     if (headerUsername) headerUsername.innerText = userData.username || "";
-                    if (headerAvatar) headerAvatar.src = userData.photoURL || 'assets/img/default-avatar.png';
+                    if (headerAvatar) headerAvatar.src = userData.photoURL || 'img/default-avatar-icon.jpg';
                     if (navUserProfile) navUserProfile.style.display = 'flex';
                     if (navLoginBtn) navLoginBtn.style.display = 'none';
                 }
