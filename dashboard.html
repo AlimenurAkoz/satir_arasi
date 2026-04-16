@@ -23,9 +23,12 @@
             </div>
         </div>
         <div class="nav-right">
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Kütüphanede ara...">
+            <div class="search-container">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Kitap veya yazar ara...">
+                </div>
+                <div id="searchSuggestions" class="search-suggestions" style="display: none;"></div>
             </div>
             <div class="user-profile-dropdown" id="navUserProfile">
                 <div class="profile-trigger">
@@ -54,81 +57,29 @@
         <div class="dashboard-grid">
             <div class="reading-now glass-card">
                 <h3>Şu An Okuduklarım</h3>
-                <div class="book-flex">
-                    <div class="book-item">
-                        <img src="https://images.gr-assets.com/books/1381342621l/13600643.jpg" alt="Şeker Portakalı">
-                        <div class="book-info">
-                            <h4>Şeker Portakalı</h4>
-                            <p>José Mauro de Vasconcelos</p>
-                            <div class="progress-bar"><span style="width: 45%;"></span></div>
-                            <span>45% tamamlandı</span>
-                            <button class="btn-continue">Devam Et</button>
-                        </div>
-                    </div>
-                    <div class="book-item">
-                        <img src="https://i.dr.com.tr/cache/600x600-0/originals/0000000064042-1.jpg" alt="Dönüşüm">
-                        <div class="book-info">
-                            <h4>Asılacak Kadın</h4>
-                            <p>Pınar Kür</p>
-                            <div class="progress-bar"><span style="width: 78%;"></span></div>
-                            <span>78% tamamlandı</span>
-                            <button class="btn-continue">Devam Et</button>
-                        </div>
-                    </div>
+                <div class="book-flex" id="current-books-container">
+                    <p>Kitaplarınız yükleniyor...</p>
                 </div>
             </div>
 
             <div class="glass-card stats-card">
-                <h3>Haftalık Okuma Hedefim</h3>
-
+                <h3>2026 Okuma Hedefim</h3>
                 <div class="circular-progress">
-                    <div class="inner-circle">75%</div>
+                    <div class="inner-circle" id="target-percent">15%</div>
                 </div>
 
                 <div class="target-info">
-                    <strong>6 / 8</strong> kitap
+                    <strong id="books-read">8</strong> / <span id="total-target">50</span> kitap
                 </div>
             </div>
         </div>
 
         <section class="glass-card recommendations-panel">
-            <h2>Senin İçin Seçtiklerimiz</h2>
-            <div class="recommendations-container">
-                <div class="recommendation-item">
-                    <img src="img/sirr.jpg" alt="Sır">
-                    <div class="book-info">
-                        <h3>Sır</h3>
-                        <p>Sırrana Yan</p>
-                        <div class="tags">
-                            <span>Klasikler</span>
-                            <span>Fantastik</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="recommendation-item">
-                    <img src="img/momo.jpg" alt="Momo">
-                    <div class="book-info">
-                        <h3>Momo</h3>
-                        <p>Michael Ende</p>
-                        <div class="tags">
-                            <span>Klasikler</span>
-                            <span>Fantastik</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="recommendation-item">
-                    <img src="img/hayvan-ciftligi.jpg" alt="Hayvan Çiftliği">
-                    <div class="book-info">
-                        <h3>Hayvan Çiftliği</h3>
-                        <p>George Orwell</p>
-                        <div class="tags">
-                            <span>Klasikler</span>
-                            <span>Fantastik</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>Senin İçin Seçtiklerimiz</h2>
+                <button id="show-more-btn" class="btn-secondary">Daha Fazla Göster</button>
+            </div>
+            <div class="recommendations-container" id="rec-container">
             </div>
         </section>
     </main>

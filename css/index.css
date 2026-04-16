@@ -119,13 +119,43 @@ body.auth-page {
     cursor: pointer;
 }
 
-/* 7. Kitap Görselleri */
+/* Kitapların dizildiği satır */
+.book-row {
+    display: flex;
+    justify-content: center; /* Kitapları ortalar */
+    align-items: flex-start;
+    gap: 40px; /* Kitaplar arasındaki boşluk */
+    width: 100%;
+    flex-wrap: nowrap; /* Yan yana kalmalarını sağlar */
+    margin-top: 30px;
+}
+
+/* Her bir kitap kartı */
+.book-card {
+    flex: 0 1 200px; /* Kartların büyümesini engeller, sabit genişlik sunar */
+    transition: transform 0.3s ease;
+}
+
+.book-card:hover {
+    transform: translateY(-10px);
+}
+
 .book-img img {
-    width: 180px;
+    width: 180px; /* Görsel genişliği */
     height: 270px;
     object-fit: cover;
     border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.book-card h4 {
+    color: white;
+    margin-top: 15px;
+    font-size: 1.1rem;
+    font-family: 'Poppins', sans-serif;
+    max-width: 180px;
+    line-height: 1.4;
 }
 
 /* 8. Call to Action (CTA) ve Aesthetic Butonlar */
