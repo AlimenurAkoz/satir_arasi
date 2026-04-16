@@ -14,10 +14,12 @@
 
     <nav class="main-nav">
         <div class="nav-left">
-            <a href="index.html" class="nav-logo">Satır Arası</a>
+            <a href="index.html" class="nav-logo" id="navLogo">Satır Arası</a>
             <div class="nav-links">
-                <a href="index.html"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
-                <a href="library.html"><i class="fa-solid fa-book"></i> Kitaplar</a>
+                <a href="index.html" id="navHomeLink"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+                <a href="library.html" id="navBooksLink"><i class="fa-solid fa-book"></i> Kitaplar</a>
+                <a href="stats.html" id="navStatsLink"><i class="fas fa-chart-line"></i> İstatistiklerim</a>
+                <a href="contact.html" id="navContactLink"><i class="fas fa-envelope"></i> Bize Ulaşın</a>
             </div>
         </div>
         <div class="nav-right">
@@ -25,7 +27,7 @@
 
             <div class="user-profile-dropdown" id="navUserProfile" style="display:none;">
                 <div class="profile-trigger">
-                    <img id="headerAvatar" src="assets/img/default-avatar.png" alt="Profil">
+                    <img id="headerAvatar" src="img/default-avatar-icon.jpg" alt="Profil">
                     <span id="headerUsername">Kullanıcı</span>
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
@@ -63,6 +65,38 @@
 
         <p class="auth-footer">Zaten bir hesabınız var mı? <a href="login.html">Giriş Yap</a></p>
     </div>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section about">
+                <h2 class="footer-logo">Satır Arası</h2>
+                <p>"Her satır arası yeni bir dünya."</p>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-github"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section links">
+                <h3>Hızlı Menü</h3>
+                <ul>
+                    <li><a href="index.html">Ana Sayfa</a></li>
+                    <li><a href="library.html">Kitaplar</a></li>
+                    <li><a href="contact.html">Bize Ulaşın</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section contact">
+                <h3>İletişim</h3>
+                <p><i class="fa-solid fa-envelope"></i> destek@satirarasi.com</p>
+                <p><i class="fa-solid fa-location-dot"></i> Mars</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Satır Arası | Tüm Hakları Saklıdır.
+        </div>
+    </footer>
 
     <script type="module" src="js/auth/auth.js"></script>
 </body>

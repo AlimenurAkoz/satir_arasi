@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitaplığım - Satır Arası</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css"> <link rel="stylesheet" href="css/library.css">   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <main class="dashboard-container">
+        
+        <div class="dashboard-grid" style="margin-top: 20px;">
+            <div class="glass-card stats-card">
+                <h3>Yıllık Okuma Hedefim</h3>
+                <div class="circular-progress">
+                    <div class="inner-circle">75%</div>
+                </div>
+                <div class="target-info">
+                    <strong>6 / 8</strong> kitap
+                </div>
+            </div>
+            
+            <div class="reading-now glass-card">
+                <h3>Şu An Okuduklarım</h3>
+                <p style="color: #555; text-align: center; margin-top: 20px;">Okunuyor listesi API'den gelecek...</p>
+            </div>
+        </div>
+
+        <section class="library-management glass-card" style="margin-top: 30px;">
+            
+            <div class="library-toolbar" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Kitaplığımda ara...">
+                </div>
+                <select class="sort-select" style="padding: 8px; border-radius: 10px; border: none;">
+                    <option>En Yeniler</option>
+                    <option>En Yüksek Puanlılar</option>
+                </select>
+            </div>
+
+            <div class="library-tabs">
+                <button class="tab-btn active">Tümü</button>
+                <button class="tab-btn">Okunuyor</button>
+                <button class="tab-btn">Okunacaklar</button>
+                <button class="tab-btn">Okuduklarım</button>
+            </div>
+
+            <div class="library-books-grid" id="userBooksContainer">
+                <p style="text-align: center; padding: 40px; color: #777;">Kütüphaneniz şu an boş görünüyor. Yeni kitaplar keşfetmeye ne dersiniz?</p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script type="module" src="js/auth/auth.js"></script>
+    <script type="module" src="js/library/library.js"></script>
+</body>
+</html>

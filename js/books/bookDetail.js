@@ -5,15 +5,24 @@ import { db, auth } from "../firebase/firebaseConfig.js";
 // --- EKRAN KONTROLÜ İÇİN GEREKLİ ALANLAR ---
 const authRequiredStatus = document.getElementById('authRequiredStatus');
 const reviewSection = document.getElementById('reviewSection');
+const homeLink = document.getElementById('homeLink');
+const logoLink = document.getElementById('logoLink');
 
 // --- KULLANICI OTURUM KONTROLÜ ---
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        // KULLANICI GİRİŞ YAPMIŞ: Senin yazdığın özellikleri aktif et
-        console.log("Aktif Kullanıcı:", user.email);
+        // GİRİŞ YAPILMIŞ: Linkleri Dashboard'a yönlendir
+        if (homeLink) homeLink.href = "dashboard.html";
+        if (logoLink) logoLink.href = "dashboard.html";
+
+        // Detay özelliklerini başlat
         initializeInteractiveFeatures();
     } else {
-        // KULLANICI GİRİŞ YAPMAMIŞ: Değişiklik alanlarını gizle ve kilit ekranı göster
+        // GİRİŞ YAPILMAMIŞ: Linkleri Index'e yönlendir (Varsayılan)
+        if (homeLink) homeLink.href = "index.html";
+        if (logoLink) logoLink.href = "index.html";
+
+        // Detay kısımlarını kilitle
         if (authRequiredStatus) {
             authRequiredStatus.style.display = 'none';
         }
@@ -33,8 +42,7 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-
-// --- KİTAP DETAY ETKİLEŞİMLERİ (Sadece giriş yapanlar için çalışır) ---
+// --- KİTAP DETAY ETKİLEŞİMLERİ ---
 function initializeInteractiveFeatures() {
     
     // 1. Yıldız Puanlama Mantığı

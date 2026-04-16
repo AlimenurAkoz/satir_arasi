@@ -40,18 +40,38 @@ document.querySelectorAll('.toggle-pass').forEach(btn => {
     });
 });
 
+const navHomeLink = document.getElementById('navHomeLink');
+const navLogo = document.querySelector('.nav-logo');
+const navStatsLink = document.getElementById('navStatsLink');
+const navContactLink = document.getElementById('navContactLink');
+const navBooksLink = document.getElementById('navBooksLink');
+
 // Oturum takibi
 onAuthStateChanged(auth, async (user) => {
-    const path = window.location.pathname;
-    const page = path.split("/").pop() || "index.html";
+    const currentPath = window.location.pathname.toLowerCase();
+    
+    const protectedPages = ['my-library.html', 'profile.html', 'stats.html', 'dashboard.html'];
+    const isProtected = protectedPages.some(page => currentPath.endsWith(page));
 
-    if (user) {
+    if (user) {// Giriş yapılmış
         if (navLoginBtn) navLoginBtn.style.display = 'none';
         if (navUserProfile) {
             navUserProfile.style.display = 'flex';
             navUserProfile.style.alignItems = 'center';
         }
 
+        // İstatistikler ve Bize Ulaşın butonlarını göster
+        if (navStatsLink) navStatsLink.style.display = 'flex';
+        if (navContactLink) navContactLink.style.display = 'flex';
+
+        if (navHomeLink) {
+            navHomeLink.href = 'dashboard.html';
+        }
+        if (navLogo) {
+            navLogo.href = 'dashboard.html';
+        }
+
+        // Kullanıcı verilerini Firestore'dan çek
         try {
             const userRef = doc(db, "users", user.uid);
             const userSnap = await getDoc(userRef);
@@ -59,19 +79,37 @@ onAuthStateChanged(auth, async (user) => {
             if (userSnap.exists()) {
                 const data = userSnap.data();
                 if (headerUsername) headerUsername.innerText = data.username;
-                if (headerAvatar) headerAvatar.src = data.photoURL || 'assets/img/default-avatar.png';
+                if (headerAvatar) headerAvatar.src = data.photoURL || 'img/default-avatar-icon.jpg';
             }
         } catch (e) {
             console.error("Firestore verisi çekilirken hata:", e);
         }
 
-    } else {
+        // Giriş yapmışken login/register'a giderse Dashboard'a at
+        if (currentPath.includes("login.html") || currentPath.includes("register.html")) {
+            window.location.replace("dashboard.html");
+        }
+
+    } else {// Giriş yapılmamış
+        
         if (navLoginBtn) navLoginBtn.style.display = 'block';
         if (navUserProfile) navUserProfile.style.display = 'none';
 
-        const protectedPages = ['library.html', 'profile.html', 'book-detail.html', 'stats.html'];
-        if (protectedPages.includes(page)) {
-            window.location.href = 'login.html';
+        // İstatistikler ve Bize Ulaşın butonlarını gizle
+        if (navStatsLink) navStatsLink.style.display = 'none';
+        if (navContactLink) navContactLink.style.display = 'none';
+
+        if (navHomeLink) {
+            navHomeLink.href = 'index.html';
+        }
+        if (navLogo) {
+            navLogo.href = 'index.html';
+        }
+
+        // Eğer kullanıcı giriş yapmamışsa ve korumalı bir sayfadaysa Login'e at
+        if (isProtected) {
+            console.warn("Yetkisiz erişim denemesi! Login sayfasına yönlendiriliyorsunuz.");
+            window.location.replace('login.html');
         }
     }
 });
@@ -124,7 +162,7 @@ if (registerForm) {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            let finalPhotoURL = 'assets/img/default-avatar.png';
+            let finalPhotoURL = 'img/default-avatar-icon.jpg';
 
             if (profileFile) {
                 finalPhotoURL = await toBase64(profileFile);
@@ -142,7 +180,7 @@ if (registerForm) {
                 createdAt: new Date()
             });
 
-            window.location.href = 'index.html';
+            window.location.href = 'dashboard.html';
         } catch (error) {
             submitBtn.innerText = "Kayıt Ol";
             submitBtn.disabled = false;
@@ -152,7 +190,7 @@ if (registerForm) {
     });
 }
 
-// --- DROPDOWN KAPANMA SORUNU ÇÖZÜMÜ ---
+// Dropdown açık kalma ve kapanma
 const profileDropdown = document.querySelector('.user-profile-dropdown');
 const dropdownMenu = document.querySelector('.dropdown-menu');
 
@@ -167,7 +205,7 @@ if (profileDropdown && dropdownMenu) {
         dropdownMenu.style.transform = 'translateY(0)';
     });
 
-    // Menüden ayrılınca kısa bir süre bekle (fare menüye geçebilsin diye)
+    // Menüden ayrılınca kısa bir süre bekle
     profileDropdown.addEventListener('mouseleave', () => {
         timeout = setTimeout(() => {
             dropdownMenu.style.opacity = '0';
@@ -182,10 +220,10 @@ if (profileDropdown && dropdownMenu) {
     });
 }
 
-// Çıkış yapma işlemi (Dropdown içindeki buton için)
+// Çıkış yapma işlemi
 if (logoutBtn) {
     logoutBtn.addEventListener('click', async (e) => {
-        e.preventDefault(); // Sayfa atlamasını engelle
+        e.preventDefault();
         if (confirm("Çıkış yapmak istediğinize emin misiniz?")) {
             try {
                 await signOut(auth);

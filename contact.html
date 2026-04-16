@@ -4,17 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Satır Arası - Giriş Yap</title>
+    <title>Satır Arası - Bize Ulaşın</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/contact.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 </head>
 
 <body class="auth-page">
 
     <nav class="main-nav">
         <div class="nav-left">
-            <a href="index.html" class="nav-logo" id="navLogo">Satır Arası</a>
+            <a href="index.html" class="nav-logo">Satır Arası</a>
             <div class="nav-links">
                 <a href="index.html" id="navHomeLink"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
                 <a href="library.html" id="navBooksLink"><i class="fa-solid fa-book"></i> Kitaplar</a>
@@ -22,10 +24,8 @@
                 <a href="contact.html" id="navContactLink"><i class="fas fa-envelope"></i> Bize Ulaşın</a>
             </div>
         </div>
-        <div class="nav-right">
-            <a href="login.html" class="btn-login-nav" id="navLoginBtn">Giriş Yap</a>
-
-            <div class="user-profile-dropdown" id="navUserProfile" style="display:none;">
+        <div class="nav-right" id="navRight">
+            <div class="user-profile-dropdown" id="navUserProfile">
                 <div class="profile-trigger">
                     <img id="headerAvatar" src="img/default-avatar-icon.jpg" alt="Profil">
                     <span id="headerUsername">Kullanıcı</span>
@@ -44,18 +44,29 @@
     </nav>
 
     <div class="glass-container">
-        <h1 class="brand-title">Satır Arası</h1>
-        <h4 class="subtitle">Dijital kitaplığınıza giriş yapın.</h4>
+        <h1 class="brand-title">Bize Ulaşın</h1>
+        <h4 class="subtitle">Sorularınız ve önerileriniz bizim için değerli.</h4>
 
-        <form id="loginForm">
-            <div class="input-group"><i class="fa-regular fa-envelope"></i><input type="email" id="loginEmail"
-                    placeholder="E-posta" required></div>
-            <div class="input-group"><i class="fa-solid fa-key"></i><input type="password" id="loginPass"
-                    placeholder="Şifre" required><i class="fa-regular fa-eye-slash toggle-pass"></i></div>
-            <button type="submit" class="btn-primary"><span id="loginText">Giriş Yap</span></button>
+        <form id="contactForm">
+            <div class="input-group">
+                <i class="fa-regular fa-envelope"></i>
+                <input type="email" id="contactEmail" placeholder="E-posta Adresiniz" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fa-solid fa-tag"></i>
+                <input type="text" id="contactSubject" placeholder="Konu" required>
+            </div>
+
+            <div class="textarea-group">
+                <i class="fa-regular fa-comment-dots"></i>
+                <textarea id="contactMessage" class="contact-textarea" placeholder="Mesajınız..." maxlength="1000"
+                    required></textarea>
+                <span class="char-counter"><span id="charCount">0</span> / 1000</span>
+            </div>
+
+            <button type="submit" class="btn-primary">Gönder</button>
         </form>
-
-        <p class="auth-footer">Hesabınız yok mu?<a href="register.html">Kayıt Ol</a></p>
     </div>
 
     <footer class="main-footer">
@@ -91,6 +102,7 @@
     </footer>
 
     <script type="module" src="js/auth/auth.js"></script>
+    <script type="module" src="js/contact/contact-logic.js"></script>
 </body>
 
 </html>

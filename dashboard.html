@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satır Arası | Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <nav class="main-nav">
+        <div class="nav-left">
+            <a href="index.html" class="nav-logo" id="navLogo">Satır Arası</a>
+            <div class="nav-links">
+                <a href="index.html" id="navHomeLink"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+                <a href="library.html" id="navBooksLink"><i class="fa-solid fa-book"></i> Kitaplar</a>
+                <a href="stats.html" id="navStatsLink"><i class="fas fa-chart-line"></i> İstatistiklerim</a>
+                <a href="contact.html" id="navContactLink"><i class="fas fa-envelope"></i> Bize Ulaşın</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Kütüphanede ara...">
+            </div>
+            <div class="user-profile-dropdown" id="navUserProfile">
+                <div class="profile-trigger">
+                    <img id="headerAvatar" src="img/default-avatar-icon.jpg" alt="Profil">
+                    <span id="headerUsername">Kullanıcı</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
+                <div class="dropdown-menu">
+                    <a href="my-library.html"><i class="fa-solid fa-book"></i> Kitaplığım</a>
+                    <a href="profile.html"><i class="fa-solid fa-user-gear"></i> Profil Ayarları</a>
+                    <hr class="dropdown-divider">
+                    <a href="#" id="logoutBtn" class="logout-link"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        Çıkış Yap</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="dashboard-container">
+        <section class="welcome-panel glass-card">
+            <h1>Hoş geldin <span class="user-name-span"></span>, okuma yolculuğuna hazır mısın?</h1>
+            <p>Senin için özel hazırlanmış okuma paneli.</p>
+        </section>
+
+        <div class="dashboard-grid">
+            <div class="reading-now glass-card">
+                <h3>Şu An Okuduklarım</h3>
+                <div class="book-flex">
+                    <div class="book-item">
+                        <img src="https://images.gr-assets.com/books/1381342621l/13600643.jpg" alt="Şeker Portakalı">
+                        <div class="book-info">
+                            <h4>Şeker Portakalı</h4>
+                            <p>José Mauro de Vasconcelos</p>
+                            <div class="progress-bar"><span style="width: 45%;"></span></div>
+                            <span>45% tamamlandı</span>
+                            <button class="btn-continue">Devam Et</button>
+                        </div>
+                    </div>
+                    <div class="book-item">
+                        <img src="https://i.dr.com.tr/cache/600x600-0/originals/0000000064042-1.jpg" alt="Dönüşüm">
+                        <div class="book-info">
+                            <h4>Asılacak Kadın</h4>
+                            <p>Pınar Kür</p>
+                            <div class="progress-bar"><span style="width: 78%;"></span></div>
+                            <span>78% tamamlandı</span>
+                            <button class="btn-continue">Devam Et</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card stats-card">
+                <h3>Haftalık Okuma Hedefim</h3>
+
+                <div class="circular-progress">
+                    <div class="inner-circle">75%</div>
+                </div>
+
+                <div class="target-info">
+                    <strong>6 / 8</strong> kitap
+                </div>
+            </div>
+        </div>
+
+        <section class="glass-card recommendations-panel">
+            <h2>Senin İçin Seçtiklerimiz</h2>
+            <div class="recommendations-container">
+                <div class="recommendation-item">
+                    <img src="img/sirr.jpg" alt="Sır">
+                    <div class="book-info">
+                        <h3>Sır</h3>
+                        <p>Sırrana Yan</p>
+                        <div class="tags">
+                            <span>Klasikler</span>
+                            <span>Fantastik</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recommendation-item">
+                    <img src="img/momo.jpg" alt="Momo">
+                    <div class="book-info">
+                        <h3>Momo</h3>
+                        <p>Michael Ende</p>
+                        <div class="tags">
+                            <span>Klasikler</span>
+                            <span>Fantastik</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recommendation-item">
+                    <img src="img/hayvan-ciftligi.jpg" alt="Hayvan Çiftliği">
+                    <div class="book-info">
+                        <h3>Hayvan Çiftliği</h3>
+                        <p>George Orwell</p>
+                        <div class="tags">
+                            <span>Klasikler</span>
+                            <span>Fantastik</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section about">
+                <h2 class="footer-logo">Satır Arası</h2>
+                <p>"Her satır arası yeni bir dünya."</p>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-github"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section links">
+                <h3>Hızlı Menü</h3>
+                <ul>
+                    <li><a href="index.html">Ana Sayfa</a></li>
+                    <li><a href="library.html">Kitaplar</a></li>
+                    <li><a href="contact.html">Bize Ulaşın</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section contact">
+                <h3>İletişim</h3>
+                <p><i class="fa-solid fa-envelope"></i> destek@satirarasi.com</p>
+                <p><i class="fa-solid fa-location-dot"></i> Mars</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Satır Arası | Tüm Hakları Saklıdır.
+        </div>
+    </footer>
+
+    <script type="module" src="js/auth/auth.js"></script>
+    <script type="module" src="js/dashboard/dashboard.js"></script>
+</body>
+
+</html>
