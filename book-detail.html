@@ -12,9 +12,9 @@
 </head>
 <body>
 
-     <nav class="main-nav">
+    <nav class="main-nav">
         <div class="nav-left">
-            <a href="index.html" class="nav-logo" id="logoLink">Satır Arası</a>
+            <a href="index.html" class="nav-logo" id="navLogo">Satır Arası</a>
             <div class="nav-links">
                 <a href="index.html" id="navHomeLink"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
                 <a href="library.html" id="navBooksLink"><i class="fa-solid fa-book"></i> Kitaplar</a>
@@ -23,6 +23,14 @@
             </div>
         </div>
         <div class="nav-right">
+            <div class="search-container">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Kitap veya yazar ara...">
+                </div>
+                <div id="searchSuggestions" class="search-suggestions" style="display: none;"></div>
+            </div>
+            
             <a href="login.html" class="btn-login-nav" id="navLoginBtn">Giriş Yap</a>
 
             <div class="user-profile-dropdown" id="navUserProfile" style="display:none;">
@@ -36,7 +44,8 @@
                     <a href="my-library.html"><i class="fa-solid fa-book"></i> Kitaplığım</a>
                     <a href="profile.html"><i class="fa-solid fa-user-gear"></i> Profil Ayarları</a>
                     <hr class="dropdown-divider">
-                    <a href="#" id="logoutBtn" class="logout-link"><i class="fa-solid fa-arrow-right-from-bracket"></i> Çıkış Yap</a>
+                    <a href="#" id="logoutBtn" class="logout-link"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        Çıkış Yap</a>
                 </div>
             </div>
         </div>
@@ -46,6 +55,15 @@
         
         <div class="book-image">
             <img src="https://books.google.com/books/content?id=v3Z7DwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api" alt="Satranç Kitap Kapağı" id="bookCover" width="250">
+            
+            <div class="page-tracker" id="pageTracker" style="display: none; margin-top: 20px; background: rgba(255,255,255,0.8); padding: 15px; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                <label style="font-weight: 600; color: #4a6b6f; font-size: 0.9rem; display:block; margin-bottom: 10px;">Okuma İlerlemesi</label>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <input type="number" id="currentPage" placeholder="0" style="width: 70px; padding: 8px; border-radius: 10px; border: 1px solid rgba(74, 107, 111, 0.3); text-align: center; outline: none; font-family: inherit; font-weight: 600;" min="0">
+                    <span style="color: #4a6b6f; font-weight: bold;">/</span>
+                    <input type="number" id="totalPages" placeholder="0" style="width: 70px; padding: 8px; border-radius: 10px; border: 1px solid rgba(74, 107, 111, 0.3); text-align: center; outline: none; font-family: inherit; font-weight: 600;" min="1">
+                </div>
+            </div>
         </div>
 
         <div class="book-info">
@@ -123,6 +141,7 @@
     </footer>
 
     <script type="module" src="js/auth/auth.js"></script>
+    <script type="module" src="js/dashboard/dashboard.js"></script>
     <script type="module" src="js/books/bookDetail.js"></script>
     
 </body>

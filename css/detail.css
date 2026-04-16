@@ -12,7 +12,7 @@ body {
     background-size: cover;
     min-height: 100vh;
     display: flex;
-    flex-direction: column; /* İçerikleri (Navbar, Main, Footer) yukarıdan aşağıya sıralar */
+    flex-direction: column; 
 }
 
 /* ANA KONTEYNER */
@@ -22,9 +22,8 @@ body {
     gap: 40px;
     width: 95%;
     max-width: 1250px;
-    /* Navbar'ın (70px) altında kalmaması için 100px üst boşluk verildi */
     margin: 100px auto 40px; 
-    flex: 1; /* Sayfa içeriği az olsa bile footer'ı en aşağıya itmeyi sağlar */
+    flex: 1; 
     padding: 45px;
     background: rgba(255, 255, 255, 0.75);
     backdrop-filter: blur(15px);
@@ -81,7 +80,7 @@ body {
     outline: none;
 }
 
-/* Kitap Özeti - Kaydırma Özelliği (Scroll) */
+/* Kitap Özeti */
 .book-summary {
     display: flex;
     flex-direction: column;
@@ -95,15 +94,14 @@ body {
 }
 
 #bookDescription {
-    max-height: 250px; /* Belirli bir yükseklikten sonra taşmayı engeller */
-    overflow-y: auto; /* Yazı uzunsa kaydırma çubuğu çıkarır */
+    max-height: 250px; 
+    overflow-y: auto; 
     padding-right: 15px;
     font-size: 1.05rem;
     line-height: 1.6;
     color: #444;
 }
 
-/* Kaydırma Çubuğu Tasarımı */
 #bookDescription::-webkit-scrollbar {
     width: 6px;
 }
@@ -133,7 +131,6 @@ textarea {
     outline: none;
 }
 
-/* Karakter Sayacı */
 .note-area {
     display: flex;
     flex-direction: column;
@@ -149,7 +146,6 @@ textarea {
     font-weight: 500;
 }
 
-/* Yıldızlar ve Buton */
 #starRating {
     display: flex;
     gap: 5px;
@@ -173,7 +169,6 @@ textarea {
     transform: translateY(-2px);
 }
 
-/* Mobil Uyumluluk */
 @media (max-width: 1100px) {
     .book-detail-container {
         flex-direction: column;
@@ -183,4 +178,34 @@ textarea {
         border-right: none;
         padding-right: 0;
     }
+}
+
+/* --- NAVBAR ARAMA ÇUBUĞU (DASHBOARD İLE BİREBİR AYNI) --- */
+.nav-right .search-container {
+    position: relative;
+    margin-right: 20px;
+}
+
+.nav-right .search-bar {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 8px 15px;
+    border-radius: 20px;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-right .search-bar i {
+    position: static;
+    transform: none;
+    color: #333;
+}
+
+.nav-right .search-bar input {
+    border: none;
+    background: transparent;
+    outline: none;
+    padding: 0;
+    padding-left: 10px;
+    width: auto;
 }

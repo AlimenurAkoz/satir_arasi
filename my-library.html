@@ -1,27 +1,90 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kitaplığım - Satır Arası</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/dashboard.css"> <link rel="stylesheet" href="css/library.css">   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/my-library.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
 
-    <main class="dashboard-container">
-        
-        <div class="dashboard-grid" style="margin-top: 20px;">
-            <div class="glass-card stats-card">
-                <h3>Yıllık Okuma Hedefim</h3>
-                <div class="circular-progress">
-                    <div class="inner-circle">75%</div>
+    <nav class="main-nav">
+        <div class="nav-left">
+            <a href="index.html" class="nav-logo" id="navLogo">Satır Arası</a>
+            <div class="nav-links">
+                <a href="index.html" id="navHomeLink"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
+                <a href="library.html" id="navBooksLink"><i class="fa-solid fa-book"></i> Kitaplar</a>
+                <a href="stats.html" id="navStatsLink"><i class="fas fa-chart-line"></i> İstatistiklerim</a>
+                <a href="contact.html" id="navContactLink"><i class="fas fa-envelope"></i> Bize Ulaşın</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="search-container">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Kitap veya yazar ara...">
                 </div>
-                <div class="target-info">
-                    <strong>6 / 8</strong> kitap
-                </div>
+                <div id="searchSuggestions" class="search-suggestions" style="display: none;"></div>
             </div>
             
+            <a href="login.html" class="btn-login-nav" id="navLoginBtn">Giriş Yap</a>
+
+            <div class="user-profile-dropdown" id="navUserProfile" style="display:none;">
+                <div class="profile-trigger">
+                    <img id="headerAvatar" src="img/default-avatar-icon.jpg" alt="Profil">
+                    <span id="headerUsername">Kullanıcı</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
+                <div class="dropdown-menu">
+                    <a href="my-library.html"><i class="fa-solid fa-book"></i> Kitaplığım</a>
+                    <a href="profile.html"><i class="fa-solid fa-user-gear"></i> Profil Ayarları</a>
+                    <hr class="dropdown-divider">
+                    <a href="#" id="logoutBtn" class="logout-link"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        Çıkış Yap</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="dashboard-container" style="margin-top: 10px; min-height: 60vh;">
+        <div class="dashboard-grid" style="margin-top: 20px;">
+            <div class="glass-card stats-card">
+                <div class="stats-header" style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                    <select id="goalYearSelect"
+                        style="padding: 5px 10px; border-radius: 10px; border: 1px solid rgba(74, 107, 111, 0.3); background: rgba(255, 255, 255, 0.7); color: #4a6b6f; font-weight: 600; outline: none; cursor: pointer;">
+                        <option value="2026">2026</option>
+                        <option value="2025">2025</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                    </select>
+                    <h3 style="margin: 0; font-size: 1.2rem;">Okuma Hedefim</h3>
+                </div>
+
+                <div class="circular-progress">
+                    <div class="inner-circle" id="goalProgressText">%0</div>
+                </div>
+
+                <div class="target-info" style="margin-top: 15px;">
+                    <strong id="goalFraction">0 / 8</strong> kitap
+                </div>
+
+                <div class="goal-input-area"
+                    style="margin-top: 20px; display: flex; align-items: center; gap: 10px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px;">
+                    <label style="font-size: 0.9rem; color: #555; font-weight: 500;">Hedefim:</label>
+                    <input type="number" id="yearlyGoalInput"
+                        style="width: 65px; padding: 6px; border-radius: 8px; border: 1px solid rgba(74, 107, 111, 0.3); text-align: center; outline: none;"
+                        min="1">
+                    <button id="saveGoalBtn"
+                        style="background: #4a6b6f; color: white; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: 0.3s;">Kaydet</button>
+                </div>
+            </div>
+
             <div class="reading-now glass-card">
                 <h3>Şu An Okuduklarım</h3>
                 <p style="color: #555; text-align: center; margin-top: 20px;">Okunuyor listesi API'den gelecek...</p>
@@ -29,11 +92,10 @@
         </div>
 
         <section class="library-management glass-card" style="margin-top: 30px;">
-            
             <div class="library-toolbar" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
                 <div class="search-bar">
                     <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Kitaplığımda ara...">
+                    <input type="text" id="librarySearchInput" placeholder="Kitaplığımda ara...">
                 </div>
                 <select class="sort-select" style="padding: 8px; border-radius: 10px; border: none;">
                     <option>En Yeniler</option>
@@ -49,14 +111,48 @@
             </div>
 
             <div class="library-books-grid" id="userBooksContainer">
-                <p style="text-align: center; padding: 40px; color: #777;">Kütüphaneniz şu an boş görünüyor. Yeni kitaplar keşfetmeye ne dersiniz?</p>
+                <p style="text-align: center; padding: 40px; color: #777;">Kütüphaneniz şu an boş görünüyor. Yeni
+                    kitaplar keşfetmeye ne dersiniz?</p>
             </div>
-
         </section>
-
     </main>
 
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section about">
+                <h2 class="footer-logo">Satır Arası</h2>
+                <p>"Her satır arası yeni bir dünya."</p>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-github"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section links">
+                <h3>Hızlı Menü</h3>
+                <ul>
+                    <li><a href="index.html">Ana Sayfa</a></li>
+                    <li><a href="library.html">Kitaplar</a></li>
+                    <li><a href="contact.html">Bize Ulaşın</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section contact">
+                <h3>İletişim</h3>
+                <p><i class="fa-solid fa-envelope"></i> destek@satirarasi.com</p>
+                <p><i class="fa-solid fa-location-dot"></i> Mars</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Satır Arası | Tüm Hakları Saklıdır.
+        </div>
+    </footer>
+
+    <script type="module" src="js/firebase/firebaseConfig.js"></script>
     <script type="module" src="js/auth/auth.js"></script>
-    <script type="module" src="js/library/library.js"></script>
+    <script type="module" src="js/dashboard/dashboard.js"></script>
+    <script type="module" src="js/mylibrary/mylibrary.js"></script>
 </body>
+
 </html>
