@@ -1,6 +1,6 @@
 import { auth, db } from '../firebase/firebaseConfig.js';
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+import { doc, getDoc, updateDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     const tabButtons = document.querySelectorAll('.tab-btn');
@@ -15,11 +15,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveGoalBtn = document.getElementById('saveGoalBtn');
 
     let userBooks = [];
-    let userGoals = JSON.parse(localStorage.getItem('myUserGoals')) || { "2026": 8 };
+    let userGoals = {};
     let currentActiveTab = 'Tümü';
 
     onAuthStateChanged(auth, async (user) => {
         if (user) {
+            // Firestore'dan kullanıcı verisini çek
+            const userRef = doc(db, "users", user.uid);
+            const userSnap = await getDoc(userRef);
+
+            // Eğer veritabanında okuma hedefi varsa onu al, yoksa 0 ata
+            const userData = userSnap.exists() ? userSnap.data() : {};
+            userGoals = userData.readingGoals || { "2026": 0 };
+
             if (booksContainer) booksContainer.innerHTML = '<p style="text-align:center; width:100%; color:#777; padding:40px;">Kütüphaneniz yükleniyor <i class="fa-solid fa-spinner fa-spin"></i></p>';
 
             try {
@@ -29,10 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 renderBooks('Tümü');
                 updateDashboard();
-                renderGoal();
+                renderGoal(); // Global userGoals değişkenini kullanır
             } catch (error) {
-                console.error("Kitaplar çekilirken hata oluştu:", error);
-                if (booksContainer) booksContainer.innerHTML = '<p style="text-align:center; color:#c0392b; padding:40px;">Veriler alınırken bir hata oluştu.</p>';
+                console.error("Kitaplar çekilirken hata:", error);
             }
         } else {
             window.location.href = 'login.html';
@@ -135,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- YILLARA GÖRE OKUMA HEDEFİ (2026 SABİT) ---
     function renderGoal() {
         const currentYear = "2026"; // Artık select'ten değil, sabit alıyoruz
-        const currentGoal = userGoals[currentYear] || 8;
+        const currentGoal = userGoals[currentYear] || 0;
 
         // Sadece 2026 yılında okunanları filtrele (readYear boşsa da 2026 sayabiliriz)
         const booksInYear = userBooks.filter(b =>
@@ -154,19 +161,33 @@ document.addEventListener('DOMContentLoaded', () => {
         const progressCircle = document.querySelector('.circular-progress');
         if (progressCircle) {
             const degree = (goalProgress / 100) * 360;
-            progressCircle.style.background = `conic-gradient(#4a6b6f ${degree}deg, rgba(74, 107, 111, 0.2) 0deg)`;
+            progressCircle.style.background = `conic-gradient(#4a6b6f ${degree}deg, #e0e0e0 0deg)`;;
         }
     }
 
-    // Kaydet butonunda da yılı 2026 olarak sabitleyelim
+
+    // Kaydet butonunu güncelle
     if (saveGoalBtn) {
-        saveGoalBtn.addEventListener('click', () => {
-            const newGoal = parseInt(yearlyGoalInput.value);
-            if (newGoal > 0) {
-                userGoals["2026"] = newGoal; // Sabit 2026
-                localStorage.setItem('myUserGoals', JSON.stringify(userGoals));
+        saveGoalBtn.addEventListener('click', async () => {
+            if (!auth.currentUser) return;
+            const newGoal = parseInt(yearlyGoalInput.value) || 0;
+
+            try {
+                const userRef = doc(db, "users", auth.currentUser.uid);
+                // Firestore'da iç içe alan (nested field) güncelleme
+                await updateDoc(userRef, {
+                    "readingGoals.2026": newGoal
+                });
+
+                // Global değişkeni de güncelle ki arayüz hemen değişsin
+                userGoals["2026"] = newGoal;
                 renderGoal();
-                // ... (başarı efekti kodları)
+
+                alert("Hedefiniz başarıyla güncellendi!");
+                window.location.reload(); // Sayfayı yeniler
+            } catch (e) {
+                console.error("Kaydetme hatası:", e);
+                alert("Hedef kaydedilemedi.");
             }
         });
     }
@@ -183,14 +204,4 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sortSelect) sortSelect.addEventListener('change', () => renderBooks(currentActiveTab));
     if (goalYearSelect) goalYearSelect.addEventListener('change', renderGoal);
 
-    if (saveGoalBtn) {
-        saveGoalBtn.addEventListener('click', () => {
-            const newGoal = parseInt(yearlyGoalInput.value);
-            if (newGoal > 0) {
-                userGoals[goalYearSelect.value] = newGoal;
-                localStorage.setItem('myUserGoals', JSON.stringify(userGoals));
-                renderGoal();
-            }
-        });
-    }
 });
