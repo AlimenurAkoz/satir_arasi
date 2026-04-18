@@ -1,23 +1,23 @@
 import { auth, db } from '../firebase/firebaseConfig.js';
-import { 
-    onAuthStateChanged, 
-    updateProfile, 
-    reauthenticateWithCredential, 
-    EmailAuthProvider, 
-    updatePassword, 
-    deleteUser, 
-    signOut 
+import {
+    onAuthStateChanged,
+    updateProfile,
+    reauthenticateWithCredential,
+    EmailAuthProvider,
+    updatePassword,
+    deleteUser,
+    signOut
 } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
-import { 
-    doc, 
-    getDoc, 
-    updateDoc, 
-    deleteDoc, 
-    collection, 
-    query, 
-    where, 
-    getDocs 
+import {
+    doc,
+    getDoc,
+    updateDoc,
+    deleteDoc,
+    collection,
+    query,
+    where,
+    getDocs
 } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -76,28 +76,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // Firebase'den veri çekme
     onAuthStateChanged(auth, async (user) => {
         if (user) {
+            console.log("Giriş yapan kullanıcı UID:", user.uid); // Debug için
             try {
                 const userDocRef = doc(db, 'users', user.uid);
                 const userDoc = await getDoc(userDocRef);
 
                 if (userDoc.exists()) {
                     const userData = userDoc.data();
+                    console.log("Firestore'dan gelen veri:", userData); // Debug için
 
-                    if (sidebarName) sidebarName.innerText = userData.username || "Kullanıcı";
-                    if (sidebarEmail) sidebarEmail.innerText = userData.email;
-                    if (sidebarImg) sidebarImg.src = userData.photoURL || 'assets/img/default-avatar.png';
+                    // Bilgileri Sidebar'a Yaz
+                    if (sidebarName) sidebarName.innerText = userData.username || "Kullanıcı Adı";
+                    if (sidebarEmail) sidebarEmail.innerText = userData.email || user.email;
+                    if (sidebarImg) sidebarImg.src = userData.photoURL || 'img/default-avatar-icon.jpg';
                     if (newDisplayNameInput) newDisplayNameInput.value = userData.username || "";
 
-                    // Navbar Senkronizasyonu
+                    // Navbar Senkronizasyonu (Sayfada bu elementler varsa)
                     const headerUsername = document.getElementById('headerUsername');
                     const headerAvatar = document.getElementById('headerAvatar');
-                    const navUserProfile = document.getElementById('navUserProfile');
-                    const navLoginBtn = document.getElementById('navLoginBtn');
 
-                    if (headerUsername) headerUsername.innerText = userData.username || "";
+                    if (headerUsername) headerUsername.innerText = userData.username || "Kullanıcı";
                     if (headerAvatar) headerAvatar.src = userData.photoURL || 'img/default-avatar-icon.jpg';
-                    if (navUserProfile) navUserProfile.style.display = 'flex';
-                    if (navLoginBtn) navLoginBtn.style.display = 'none';
+
+                    // Loader'ı kapat
+                    const loader = document.getElementById('loader');
+                    if (loader) loader.style.display = 'none';
+
+                } else {
+                    console.warn("Firestore'da bu kullanıcıya ait döküman bulunamadı!");
                 }
             } catch (error) {
                 console.error("Firestore veri çekme hatası:", error);
@@ -107,7 +113,54 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Profil güncelleme
+    // Profil fotoğrafı güncelleme
+    const avatarInput = document.getElementById('avatar-input');
+    const avatarPreview = document.getElementById('profile-img-preview');
+
+    if (avatarInput) {
+        avatarInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            const user = auth.currentUser;
+
+            if (!file) return;
+
+            if (!user) {
+                alert("Oturum süresi dolmuş, lütfen tekrar giriş yapın.");
+                return;
+            }
+
+            try {
+                // Resmi küçültüp Base64'e çevir
+                const base64Image = await toBase64(file);
+
+                // Arayüzü anlık güncelle
+                if (avatarPreview) avatarPreview.src = base64Image;
+
+                // Firestore'daki kullanıcı dökümanını güncelle
+                const userRef = doc(db, "users", user.uid);
+                await updateDoc(userRef, {
+                    photoURL: base64Image
+                });
+
+                // Firebase Auth üzerindeki profili güncelle
+                await updateProfile(user, {
+                    photoURL: base64Image
+                });
+
+                // Navbar'daki küçük avatarı da güncelle
+                const headerAvatar = document.getElementById('headerAvatar');
+                if (headerAvatar) headerAvatar.src = base64Image;
+
+                alert("Profil fotoğrafı başarıyla güncellendi!");
+
+            } catch (error) {
+                console.error("Fotoğraf güncelleme hatası:", error);
+                alert("Hata: Fotoğraf güncellenirken bir sorun oluştu.");
+            }
+        });
+    }
+
+    // Kullanıcı adı güncelleme
     const updateProfileForm = document.getElementById('update-profile-form');
     if (updateProfileForm) {
         updateProfileForm.addEventListener('submit', async (e) => {
@@ -118,11 +171,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!user || !newName) return;
 
             try {
+                // Mevcut isimle aynı mı kontrolü
                 if (newName === user.displayName) {
                     alert("Zaten bu kullanıcı adını kullanıyorsunuz.");
                     return;
                 }
 
+                // Kullanıcı adı benzersiz mi kontrolü
                 const q = query(collection(db, "users"), where("username", "==", newName));
                 const nameCheck = await getDocs(q);
 
@@ -131,13 +186,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
+                // Firestore Güncelleme
                 await updateDoc(doc(db, "users", user.uid), { username: newName });
+
+                // Firebase Auth Profil Güncelleme
                 await updateProfile(user, { displayName: newName });
 
                 alert("Kullanıcı adınız başarıyla güncellendi!");
-                location.reload();
+
+                // Sidebar ve Navbar'daki isimleri anlık güncelle
+                if (sidebarName) sidebarName.innerText = newName;
+                const headerUsername = document.getElementById('headerUsername');
+                if (headerUsername) headerUsername.innerText = newName;
 
             } catch (error) {
+                console.error("Güncelleme hatası:", error);
                 alert("Güncelleme hatası: " + error.message);
             }
         });
@@ -188,7 +251,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
-    document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
-    document.getElementById('logoutBtn')?.addEventListener('click', handleLogout);
 });

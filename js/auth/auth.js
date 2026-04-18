@@ -48,7 +48,7 @@ const navBooksLink = document.getElementById('navBooksLink');
 // Oturum takibi
 onAuthStateChanged(auth, async (user) => {
     const currentPath = window.location.pathname.toLowerCase();
-    
+
     const protectedPages = ['my-library.html', 'profile.html', 'dashboard.html'];
     const isProtected = protectedPages.some(page => currentPath.endsWith(page));
 
@@ -142,42 +142,57 @@ if (registerForm) {
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const submitBtn = registerForm.querySelector('.btn-primary');
-        const username = document.getElementById('regUser').value;
-        const email = document.getElementById('regEmail').value;
-        const password = document.getElementById('regPass')?.value || document.getElementById('loginPass')?.value;
+        const username = document.getElementById('regUser').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const password = document.getElementById('regPass').value;
         const profileFile = fileInput ? fileInput.files[0] : null;
 
         try {
-            submitBtn.innerText = "Hesap Oluşturuluyor...";
+            submitBtn.innerText = "Yükleniyor...";
             submitBtn.disabled = true;
 
+            // Auth oluştur
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
+            console.log("Auth Başarılı. UID:", user.uid);
 
+            // Resim yoksa default ataması yapalım
             let finalPhotoURL = 'img/default-avatar-icon.jpg';
-
             if (profileFile) {
                 finalPhotoURL = await toBase64(profileFile);
             }
 
+            // Firestore'a kaydedilecek kullanıcı verisi
+            const userData = {
+                uid: user.uid,
+                username: username,
+                email: email.toLowerCase(),
+                photoURL: finalPhotoURL,
+                createdAt: new Date()
+            };
+
+            console.log("Firestore'a bu veri gönderiliyor:");
+            console.table(userData);
+
+            // Firestore'a kaydet
+            const userRef = doc(db, "users", user.uid);
+            await setDoc(userRef, userData);
+            console.log("Firestore Kaydı Başarılı!");
+
+            // Auth profili güncelle
             await updateProfile(user, {
                 displayName: username,
                 photoURL: finalPhotoURL
             });
-
-            await setDoc(doc(db, "users", user.uid), {
-                username: username,
-                photoURL: finalPhotoURL,
-                email: email,
-                createdAt: new Date()
-            });
+            console.log("Auth Profili Güncellendi!");
 
             window.location.href = 'dashboard.html';
+
         } catch (error) {
             submitBtn.innerText = "Kayıt Ol";
             submitBtn.disabled = false;
-            console.error("Kayıt hatası:", error);
-            alert("Hata: " + error.message);
+            console.error("HATA! Hata Detayı:", error.code, error.message);
+            alert("Kayıt sırasında hata oluştu: " + error.message);
         }
     });
 }
