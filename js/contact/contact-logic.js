@@ -24,15 +24,9 @@ if (contactMessage && charCount) {
         
         charCount.innerText = currentLength;
 
-        if (currentLength >= 1000) {
+        if (currentLength >= 900) {
             charCount.style.color = "#ce3221";
             charCount.style.fontWeight = "bold";
-        } else if (currentLength >= 500) {
-            charCount.style.color = "#c98623";
-            charCount.style.fontWeight = "bold";
-        } else {
-            charCount.style.color = "#777";
-            charCount.style.fontWeight = "normal";
         }
     });
 }

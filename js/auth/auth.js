@@ -42,7 +42,6 @@ document.querySelectorAll('.toggle-pass').forEach(btn => {
 
 const navHomeLink = document.getElementById('navHomeLink');
 const navLogo = document.querySelector('.nav-logo');
-const navStatsLink = document.getElementById('navStatsLink');
 const navContactLink = document.getElementById('navContactLink');
 const navBooksLink = document.getElementById('navBooksLink');
 
@@ -50,20 +49,17 @@ const navBooksLink = document.getElementById('navBooksLink');
 onAuthStateChanged(auth, async (user) => {
     const currentPath = window.location.pathname.toLowerCase();
     
-    const protectedPages = ['my-library.html', 'profile.html', 'stats.html', 'dashboard.html'];
+    const protectedPages = ['my-library.html', 'profile.html', 'dashboard.html'];
     const isProtected = protectedPages.some(page => currentPath.endsWith(page));
 
-    if (user) {// Giriş yapılmış
+    if (user) {
         if (navLoginBtn) navLoginBtn.style.display = 'none';
         if (navUserProfile) {
             navUserProfile.style.display = 'flex';
             navUserProfile.style.alignItems = 'center';
         }
 
-        // İstatistikler ve Bize Ulaşın butonlarını göster
-        if (navStatsLink) navStatsLink.style.display = 'flex';
-        if (navContactLink) navContactLink.style.display = 'flex';
-
+        // Navbar linklerini Dashboard'a yönlendir
         if (navHomeLink) {
             navHomeLink.href = 'dashboard.html';
         }
@@ -90,15 +86,11 @@ onAuthStateChanged(auth, async (user) => {
             window.location.replace("dashboard.html");
         }
 
-    } else {// Giriş yapılmamış
-        
+    } else {
         if (navLoginBtn) navLoginBtn.style.display = 'block';
         if (navUserProfile) navUserProfile.style.display = 'none';
 
-        // İstatistikler ve Bize Ulaşın butonlarını gizle
-        if (navStatsLink) navStatsLink.style.display = 'none';
-        if (navContactLink) navContactLink.style.display = 'none';
-
+        // Linkleri ana sayfaya döndür
         if (navHomeLink) {
             navHomeLink.href = 'index.html';
         }

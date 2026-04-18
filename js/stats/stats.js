@@ -1,1 +1,0 @@
-//istatistik hesaplama
