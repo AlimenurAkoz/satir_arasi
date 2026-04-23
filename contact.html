@@ -16,16 +16,17 @@
 
     <nav class="main-nav">
         <div class="nav-left">
-            <a href="index.html" class="nav-logo">Satır Arası</a>
+            <a href="index.html" class="nav-logo" id="navLogo">Satır Arası</a>
             <div class="nav-links">
                 <a href="index.html" id="navHomeLink"><i class="fa-solid fa-house"></i> Ana Sayfa</a>
                 <a href="library.html" id="navBooksLink"><i class="fa-solid fa-book"></i> Kitaplar</a>
-                <a href="stats.html" id="navStatsLink"><i class="fas fa-chart-line"></i> İstatistiklerim</a>
                 <a href="contact.html" id="navContactLink"><i class="fas fa-envelope"></i> Bize Ulaşın</a>
             </div>
         </div>
-        <div class="nav-right" id="navRight">
-            <div class="user-profile-dropdown" id="navUserProfile">
+        <div class="nav-right">
+            <a href="login.html" class="btn-login-nav" id="navLoginBtn">Giriş Yap</a>
+
+            <div class="user-profile-dropdown" id="navUserProfile" style="display:none;">
                 <div class="profile-trigger">
                     <img id="headerAvatar" src="img/default-avatar-icon.jpg" alt="Profil">
                     <span id="headerUsername">Kullanıcı</span>

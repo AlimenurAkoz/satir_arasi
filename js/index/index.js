@@ -108,4 +108,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     fetchPopularBooks();
+
+    // --- 4. YUKARI ÇIK BUTONU MANTIĞI ---
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+    // Sayfa aşağı kaydırıldığında butonu göster, yukarıdaysa gizle
+    window.addEventListener('scroll', () => {
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            scrollTopBtn.style.display = "block";
+        } else {
+            scrollTopBtn.style.display = "none";
+        }
+    });
+
+    // Butona tıklandığında yumuşak bir geçişle yukarı çık
+    scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
 });

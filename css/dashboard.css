@@ -13,7 +13,7 @@ body {
     padding: 20px;
 }
 
-/* Glassmorphism Etkisi (Görsel 2'deki gibi) */
+/* Glassmorphism Etkisi*/
 .glass-card {
     background: rgba(255, 255, 255, 0.45); /* Görsel 2'deki daha şeffaf ton */
     backdrop-filter: blur(15px);
@@ -40,6 +40,23 @@ body {
     gap: 25px;
 }
 
+/* --- ŞU AN OKUDUKLARIM (Scroll Özellikli) --- */
+.reading-now {
+    height: 380px; /* Sabit yükseklik: Scroll'un tetiklenmesi için */
+    display: flex;
+    flex-direction: column;
+}
+
+#current-books-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Yan yana 2 kitap */
+    gap: 15px;
+    margin-top: 15px;
+    overflow-y: auto; /* Taşan kısmı kaydırır */
+    padding-right: 8px;
+    flex: 1;
+}
+
 /* Kitap Öğeleri */
 .book-flex {
     display: flex;
@@ -47,33 +64,49 @@ body {
     margin-top: 20px;
 }
 
+/* Kitap Öğeleri */
 .book-item {
     display: flex;
-    gap: 15px;
-    background: rgba(255, 255, 255, 0.3);
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.4);
     padding: 15px;
-    border-radius: 20px;
-    flex: 1;
+    border-radius: 18px;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    transition: background 0.2s ease;
+    min-width: 0;
+}
+
+.book-item:hover {
+    background: rgba(255, 255, 255, 0.6);
 }
 
 .book-item img {
-    width: 100px;
-    border-radius: 10px;
-    box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+    width: 65px;
+    height: 95px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    flex-shrink: 0;
+}
+
+.book-item .book-info {
+    flex: 1;
+    min-width: 0; /* Yazı taşmalarını engeller */
 }
 
 .progress-bar {
     width: 100%;
-    height: 8px;
-    background: rgba(0,0,0,0.1);
+    height: 6px;
+    background: rgba(74, 107, 111, 0.2);
     border-radius: 10px;
-    margin: 10px 0;
+    margin: 10px 0 5px 0;
 }
 
 .progress-bar span {
     display: block;
     height: 100%;
-    background: #4a6b6f; /* Görsel 2'deki koyu yeşil */
+    background: #4a6b6f;
     border-radius: 10px;
 }
 
@@ -81,10 +114,17 @@ body {
     background: #4a6b6f;
     color: white;
     border: none;
-    padding: 8px 15px;
-    border-radius: 10px;
+    padding: 5px 12px;
+    border-radius: 8px;
     cursor: pointer;
-    margin-top: 10px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    transition: 0.3s;
+}
+
+.btn-continue:hover {
+    background: #3a5659;
+    transform: scale(1.05);
 }
 
 /* Hedef Dairesi*/
@@ -103,8 +143,7 @@ body {
     width: 120px; /* Biraz büyüterek alanı doldurduk */
     height: 120px;
     border-radius: 50%;
-    /* 75% doluluk oranı için */
-    background: conic-gradient(#4a6b6f 270deg, rgba(0,0,0,0.1) 0deg);
+    background: #e0e0e0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -274,6 +313,36 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+/* --- Kaydırma Çubuğu (Scrollbar) Tasarımı --- */
+
+/* 1. Çubuğun genişliği */
+#current-books-container::-webkit-scrollbar {
+    width: 8px; 
+}
+
+/* 2. Çubuğun arka planı (Ray kısmı) */
+#current-books-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1); 
+    border-radius: 10px;
+}
+/* 3. Hareket eden çubuk (Asıl renkli kısım - BURAYI DEĞİŞTİR) */
+#current-books-container::-webkit-scrollbar-thumb {
+    background: #4a6b6f;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.1); /* Çubuk kenarlarına biraz boşluk hissi verir */
+}
+
+/* 4. Mouse ile üzerine gelince rengin değişmesi (Opsiyonel) */
+#current-books-container::-webkit-scrollbar-thumb:hover {
+    background: #3a5659; /* Mouse ile üzerine gelinceki koyu renk */
+}
+
+/* Firefox için destek */
+#current-books-container {
+    scrollbar-width: thin;
+    scrollbar-color: #4a6b6f rgba(255, 255, 255, 0.1);
 }
 
 /* --- RESPONSIVE TASARIM --- */

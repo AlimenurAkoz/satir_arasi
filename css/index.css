@@ -206,6 +206,31 @@ body.auth-page {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
+/* Yukarı Çık Butonu Stili */
+#scrollTopBtn {
+    display: none; /* Başlangıçta gizli */
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    background-color: #4a6b6f;
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+}
+
+#scrollTopBtn:hover {
+    background-color: #3a5659;
+    transform: translateY(-5px); /* Üzerine gelince biraz yükselir */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+
 /* 9. Mobil Uyumluluk (Index Özel) */
 @media (max-width: 768px) {
     .serif-title { font-size: 2.2rem; }
