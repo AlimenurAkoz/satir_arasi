@@ -1,6 +1,4 @@
-//kullanıcının kitaplığını gösterme
-// js/library/library.js
-// js/library/library.js dosyasının en üstü
+
 import { saveBookToFirebase } from "../books/addBook.js";
 import { BookRequest } from "../books/bookRequest.js";
 const bookRequester = new BookRequest();
@@ -52,8 +50,6 @@ async function fetchBooks(query) {
 
 
 
-// ... (fetchBooks ve diğer kodların olduğu yer)
-
 function displayBooks(books) {
     booksContainer.innerHTML = ''; 
     if (!books || books.length === 0) {
@@ -71,7 +67,7 @@ function displayBooks(books) {
         // Kitap kartını oluştur
         const bookCard = document.createElement('div');
         bookCard.className = 'book-card';
-        // data-id özniteliğini ekliyoruz
+       
         bookCard.innerHTML = `
            <img src="${thumbnail}" 
                alt="${info.title}" 

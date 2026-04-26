@@ -1,7 +1,4 @@
-/* dashboard.css */
-
 body {
-    /* Görsel 2'deki arka plan havasını vermek için */
     background: url('../img/login-bg.jpeg') no-repeat center center fixed;
     background-size: cover;
     padding-top: 90px; /* Navbar için boşluk */
@@ -15,7 +12,7 @@ body {
 
 /* Glassmorphism Etkisi*/
 .glass-card {
-    background: rgba(255, 255, 255, 0.45); /* Görsel 2'deki daha şeffaf ton */
+    background: rgba(255, 255, 255, 0.45); 
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.5);
@@ -140,7 +137,7 @@ body {
 
 
 .circular-progress {
-    width: 120px; /* Biraz büyüterek alanı doldurduk */
+    width: 120px; 
     height: 120px;
     border-radius: 50%;
     background: #e0e0e0;
@@ -165,7 +162,7 @@ body {
     color: #4a6b6f;
 }
 
-/* Alttaki 6/8 kitap yazısı için */
+
 .target-info {
     margin-top: 10px;
     font-size: 1.1rem;
@@ -254,7 +251,6 @@ body {
 }
 
 /*sizin için seçtiklerimiz kısmı*/
-/* Öneriler başlığındaki butonu güzelleştirelim */
 .btn-secondary {
     background: rgba(74, 107, 111, 0.15);
     color: #4a6b6f;
@@ -278,7 +274,7 @@ body {
     font-family: 'Georgia', serif;
 }
 
-/* Öneriler Kapsayıcısı - Flex ve Grid çakışmasını giderdik */
+/* Öneriler Kapsayıcısı  */
 .recommendations-container {
     display: grid;
     /* Mobilde 1, tablette 2, masaüstünde 3 sütun */
@@ -327,7 +323,7 @@ body {
     background: rgba(255, 255, 255, 0.1); 
     border-radius: 10px;
 }
-/* 3. Hareket eden çubuk (Asıl renkli kısım - BURAYI DEĞİŞTİR) */
+/* 3. Hareket eden çubuk  */
 #current-books-container::-webkit-scrollbar-thumb {
     background: #4a6b6f;
     border-radius: 10px;
@@ -380,7 +376,7 @@ body {
 
     /* Navbar Mobilde Sığmazsa */
     .nav-links {
-        display: none; /* İstersen buraya bir hamburger menü yapabilirsin, şimdilik basit tutuyoruz */
+        display: none; 
     }
     
     .stats-card {

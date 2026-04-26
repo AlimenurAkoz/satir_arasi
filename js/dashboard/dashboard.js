@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let okunan = 0;
             const currentYear = new Date().getFullYear().toString();
             try {
-                // 1. Kullanıcının kendi dokümanından hedefi çek
+                //  Kullanıcının kendi dokümanından hedefi çek
                 const userRef = doc(db, "users", user.uid);
                 const userSnap = await getDoc(userRef);
 
@@ -26,13 +26,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     const data = userSnap.data();
                     if (welcomeNameSpan) welcomeNameSpan.innerText = data.username || "Okur";
 
-                    // 1. HEDEFİ LOCALSTORAGE'DAN AL (my-library ile tam uyum)
+                    //  HEDEFİ LOCALSTORAGE'DAN AL 
                     const userGoals = JSON.parse(localStorage.getItem('myUserGoals')) || { "2026": 8, "2025": 12, "2024": 15 };
                     const currentYear = new Date().getFullYear().toString();
                     hedef = userGoals[currentYear] || 8;
 
 
-                    // 2. Okunan Kitap Sayısını Canlı Say (Koleksiyondan sayıyoruz)
+                    //  Okunan Kitap Sayısını Canlı Say (Koleksiyondan sayıyoruz)
                     // "Okuduklarım" etiketine sahip kaç kitap varsa hepsini getirir
                     const libraryRef = collection(db, "users", user.uid, "kullaniciKitapligi");
                     const qRead = query(libraryRef, where("status", "==", "Okuduklarım"));
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     hedef = data.readingGoals?.["2026"] || 0;
                 }
 
-                // 2. Kütüphaneden sadece bu yıl okunanları say
+                //  sadece bu yıl okunanları say
                 const libraryRef = collection(db, "users", user.uid, "kullaniciKitapligi");
                 const qRead = query(libraryRef, where("status", "==", "Okuduklarım"));
                 const readSnap = await getDocs(qRead);
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // readSnap.size, sorgu sonucundaki kitap sayısını verir
                 okunan = readSnap.size;
 
-                // 3. Arayüzü güncelle
+                // Arayüzü güncelle
                 updateReadingGoal(okunan, hedef);
 
                 // Mevcut kitapları getir
@@ -111,14 +111,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!container) return;
 
         try {
-
-            // bookDetail.js'deki yapıya uygun olarak 'kullaniciKitapliği' na koleksiyonuna bakıyoruz
-            // Ve durumun "Okunuyor" (Türkçe) olduğunu kontrol ediyoruz
             const q = query(
                 collection(db, "users", userId, "kullaniciKitapligi"),
                 where("status", "==", "Okunuyor")
             );
-
 
             const querySnapshot = await getDocs(q);
 

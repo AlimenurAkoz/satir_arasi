@@ -29,7 +29,6 @@ body.library-page {
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 30px;
     padding: 40px 20px;
-    /* İçeriklerin arkadaki bitkilerin üzerinde daha rahat okunması için hafif karartma */
     background: rgba(255, 255, 255, 0.1); 
     min-height: 100vh;
     
@@ -38,20 +37,14 @@ body.library-page {
 
 /* Kitap Kartları (Cam Efekti) */
 .book-card {
-    /* Beyaz şeffaf arka plan */
     background: rgba(255, 255, 255, 0.15); 
-    /* Arkadaki görseli bulanıklaştırarak derinlik katar */
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px); 
-    
-    /* İnce zarif çerçeve */
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 20px;
     padding: 20px;
     text-align: center;
     transition: all 0.3s ease;
-    
-    /* Hafif gölge */
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
 }
 
@@ -75,7 +68,7 @@ body.library-page {
 /* Yazı Renkleri */
 .book-card h3 {
     font-size: 1.2rem;
-    color: #1a2f1c; /* Koyu yeşil tonu, tema ile uyumlu */
+    color: #1a2f1c; 
     margin-bottom: 5px;
 }
 /*yazarlar*/
@@ -92,14 +85,13 @@ body.library-page {
     margin-bottom: 10px;
     
 }
-/* Üzerine gelince bir ipucu varmış gibi hissettirelim */
 .book-card p:hover {
     color: #5d8a66;
 }
 
 /* Buton Tasarımı */
 .book-card button {
-    background: #5d8a66; /* Bitki yeşili tonu */
+    background: #5d8a66; 
     color: white;
     border: none;
     padding: 10px 20px;
@@ -116,14 +108,12 @@ body.library-page {
 /*yeni dünyalar keşfet*/
 .glass-text {
     filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
-    font-size: 2rem; /* Yazıyı büyütür */
-    font-weight: 800; /* Daha kalın ve belirgin yapar */
-    color: #000000; /* Temandaki koyu yeşil tonu */
-    text-transform: uppercase; /* Tüm harfleri büyük yapar */
-    letter-spacing: 2px; /* Harf arası boşluk bırakarak ferahlatır */
+    font-size: 2rem; 
+    font-weight: 800; 
+    color: #000000; 
+    text-transform: uppercase; 
+    letter-spacing: 2px; 
     margin-bottom: 10px;
-    
-    /* Hafif bir gölge ile derinlik katıp okunabilirliği artırır */
     text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
 }
 .search-section p {
@@ -135,7 +125,7 @@ body.library-page {
     font-size: 1.2rem;
     font-weight: 600;
     color: #000000;
-    font-style: italic; /* Eğik yazı daha "edebi" bir hava katar */
+    font-style: italic; 
     opacity: 0.9;
 }
 
@@ -143,19 +133,19 @@ body.library-page {
 .search-bar {
     display: flex;
     gap: 10px;
-    background: rgba(255, 255, 255, 0.2); /* Daha belirgin beyaz şeffaflık */
+    background: rgba(255, 255, 255, 0.2); 
     backdrop-filter: blur(10px);
     padding: 10px;
     border-radius: 15px;
     border: 1px solid rgba(255, 255, 255, 0.3);
     width: 100%;
-    max-width: 600px; /* Genişliği artırdık */
+    max-width: 600px; 
 }
 
 /* Yazı yazılan alan */
 #searchInput {
     flex: 1;
-    padding: 15px 20px; /* İç boşluğu artırarak alanı büyüttük */
+    padding: 15px 20px; 
     font-size: 1.1rem;
     border: none;
     border-radius: 10px;
@@ -166,11 +156,11 @@ body.library-page {
 /* Ara butonu */
 #searchBtn {
     
-    padding: 0 30px; /* Butonu yanlardan genişlettik */
+    padding: 0 30px; 
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
-    background-color: #5d8a66; /* Tema renginle uyumlu yeşil */
+    background-color: #5d8a66;
     color: white;
     border: none;
     border-radius: 10px;
@@ -182,15 +172,15 @@ body.library-page {
 
 #searchBtn:hover {
     background-color: #4a6e52;
-    transform: scale(1.05); /* Üzerine gelince hafifçe büyüsün */
+    transform: scale(1.05); 
 }
 .search-section {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Her şeyi yatayda ortalar */
+    align-items: center; 
     justify-content: center;
     text-align: center;
-    padding: 120px 20px 60px 20px; /* Yukarıdan ve aşağıdan boşluk bırakır */
+    padding: 120px 20px 60px 20px; 
 }
 
 .search-bar-container {
@@ -207,29 +197,29 @@ body.library-page {
     padding: 0 15px;
 }
 
-/* Konteynırı daha "katı" ve belirgin yapalım */
+
 .request-container.glass-effect {
-    background: rgba(255, 255, 255, 0.85); /* Şeffaflığı azalttık, daha beyaz yaptık */
+    background: rgba(255, 255, 255, 0.85); 
     backdrop-filter: blur(15px);
-    border: 2px solid #2d5a27; /* Kenarlara koyu yeşil belirgin bir hat ekledik */
+    border: 2px solid #2d5a27; 
     border-radius: 20px;
     padding: 35px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); /* Daha derin bir gölge */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); 
     text-align: center;
 }
 
-/* Üstteki metni daha okunaklı yapalım */
+
 .request-intro {
     color: #1a3c34;
-    font-size: 1.3rem; /* Boyutu büyüttük */
-    font-weight: 800; /* Kalınlaştırdık */
+    font-size: 1.3rem; 
+    font-weight: 800; 
     text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
     margin-bottom: 20px;
 }
 
-/* Butonu sayfadaki "Ara" butonu gibi belirgin yapalım */
+/*  butonu  belirgin yapma */
 .btn-request-toggle {
-    background-color: #2d5a27; /* Senin sayfandaki o güzel yeşil tonu */
+    background-color: #2d5a27; 
     color: white !important;
     padding: 15px 30px;
     border-radius: 12px;
@@ -251,16 +241,14 @@ body.library-page {
     display: none; /* Başlangıçta gizli, JS ile açılacak */
     flex-direction: column;
     gap: 15px;
-    max-width: 500px; /* Biraz genişlettik */
+    max-width: 500px; 
     margin: 25px auto;
     padding: 30px;
     
-    /* Arka planı çok daha belirgin yapıyoruz */
     background: rgba(255, 255, 255, 0.95); 
-    border: 3px solid #2d5a27; /* Kalın yeşil çerçeve */
+    border: 3px solid #2d5a27; 
     border-radius: 15px;
     
-    /* Derinlik katmak için güçlü gölge */
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     position: relative;
 }
@@ -272,7 +260,6 @@ body.library-page {
     text-align: center;
 }
 
-/* Giriş Alanlarını Parlatalım */
 .request-form-card input {
     padding: 12px;
     border: 2px solid #e0e0e0;
@@ -283,18 +270,18 @@ body.library-page {
 }
 
 .request-form-card input:focus {
-    border-color: #2d5a27; /* Yazarken kenarlar yeşil olur */
+    border-color: #2d5a27; 
 }
 
  /* Kitap isteğinde bulunun */
 /* Ana Kapsayıcıyı Ortala */
 .request-mini-container {
     display: flex ; /* JS ile açılacak */
-    flex-direction: column; /* Alt alta diz */
-    align-items: center; /* Yatayda ortala */
-    justify-content: center; /* Dikeyde ortala */
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
     width: 100%;
-    margin: 40px 0 auto ; /* Ortalar */
+    margin: 40px 0 auto ; 
     gap: 15px;
     display: flex;
     text-align: center;
@@ -303,27 +290,27 @@ body.library-page {
 
 /* Yazıyı Sadeleştir */
 .request-text {
-    color: #1a3c34; /* Senin temandaki koyu yeşil */
+    color: #1a3c34; 
     font-size: 1.1rem;
     font-weight: 600;
     margin-bottom: 15px;
-    background: rgba(255, 255, 255, 0.4); /* Çok hafif şeffaf bant[cite: 3] */
+    background: rgba(255, 255, 255, 0.4); 
     padding: 8px 20px;
-    border-radius: 50px; /* Oval görünüm[cite: 3] */
-    backdrop-filter: blur(5px); /* Hafif buzlu cam[cite: 3] */
-    display: inline-block; /* Şeridin tüm satırı kaplamasını engeller */
-    width: fit-content; /* Sadece yazı kadar yer kaplamasını sağlar */
+    border-radius: 50px; 
+    backdrop-filter: blur(5px); 
+    display: inline-block; 
+    width: fit-content; 
 }
 
-/* Butonu Arama Butonuyla Uyumlu Yap */
+/* Butonu Arama Butonuyla Uyumlu Yaptım */
 .request-btn-simple {
-    all: unset; /* Tarayıcı varsayılanlarını siler */
+    all: unset; 
     display: block !important;
-    margin: 0 auto !important; /* Kendi içinde ortalar */
-    background-color: #6a8e6d; /* Sayfandaki yeşil tonu[cite: 3] */
+    margin: 0 auto !important; 
+    background-color: #6a8e6d; 
     color: white !important;
     padding: 10px 25px;
-    border-radius: 50px; /* Oval[cite: 3] */
+    border-radius: 50px; 
     border: none;
     font-weight: bold;
     cursor: pointer;
@@ -340,8 +327,8 @@ body.library-page {
 /*aradığınız kitap bulunamadı*\
 /* "Aradığınız kitap bulunamadı" yazısının stili */
 .no-results {
-    display: table !important; /* Kutunun sadece yazı kadar yer kaplamasını sağlar */
-    margin: 20px auto !important; /* Ortalar */
+    display: table !important;
+    margin: 20px auto !important; 
     padding: 10px 25px !important;
     background: rgba(255, 255, 255, 0.45) !important;
     backdrop-filter: blur(8px) !important;
@@ -349,7 +336,7 @@ body.library-page {
     border: 1px solid rgba(255, 255, 255, 0.3) !important;
     color: #1a3c34 !important;
     font-weight: 600 !important;
-    height: auto !important; /* Uzamayı durdurur */
+    height: auto !important; 
     grid-column: 1 / -1 !important;
 }
 /* 1. Tüm bölümü kapsayan ana kutuyu hizala */
@@ -364,9 +351,9 @@ body.library-page {
 
 /* 2. Üstteki Baloncuk (Hizalama Düzeltmesi) */
 .request-text {
-    display: block !important;         /* Table yerine block yapıp margin ile ortalıyoruz */
+    display: block !important;         
     margin: 0 auto 15px auto !important; 
-    width: fit-content !important;     /* Sadece yazı kadar genişlik */
+    width: fit-content !important;     
     padding: 10px 25px !important;
     background: rgba(255, 255, 255, 0.45) !important;
     backdrop-filter: blur(8px) !important;
@@ -377,12 +364,12 @@ body.library-page {
     box-sizing: border-box !important;
 }
 
-/* 3. Kitap İstek Formu (Hizalama Düzeltmesi) */
+/* 3. Kitap İstek Formu */
 #book-request-form {
     display: none; /* JS ile flex yapılacak */
     flex-direction: column !important;
     align-items: center !important;
-    margin: 0 auto !important;         /* Formu merkeze sabitler */
+    margin: 0 auto !important;         
     width: 90% !important;
     max-width: 450px !important;
     background: rgba(255, 255, 255, 0.9) !important;

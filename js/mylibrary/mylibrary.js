@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return matchesStatus && matchesSearch;
         });
 
-        // 2. SIRALAMA MANTIĞI (DÜZELTİLDİ)
+        // 2. SIRALAMA MANTIĞI 
         if (sortSelect) {
             if (sortSelect.value === "rating" || sortSelect.value === "En Yüksek Puanlılar") {
                 // Sayısal karşılaştırma yaparak puanları sıralıyoruz
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- YILLARA GÖRE OKUMA HEDEFİ (2026 SABİT) ---
     function renderGoal() {
-        const currentYear = "2026"; // Artık select'ten değil, sabit alıyoruz
+        const currentYear = "2026"; 
         const currentGoal = userGoals[currentYear] || 0;
 
         // Sadece 2026 yılında okunanları filtrele (readYear boşsa da 2026 sayabiliriz)
@@ -183,7 +183,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     "readingGoals.2026": newGoal
                 });
 
-                // Global değişkeni de güncelle ki arayüz hemen değişsin
                 userGoals["2026"] = newGoal;
                 renderGoal();
 
@@ -222,7 +221,7 @@ if (saveGoalBtn) {
                 // Arayüzü güncelle (Çember ve rakamlar)
                 renderGoal();
 
-                // Görsel geri bildirim (Yeşil buton efekti)
+                // Görsel geri bildirim 
                 const originalText = saveGoalBtn.innerText;
                 saveGoalBtn.innerText = "✓";
                 saveGoalBtn.style.background = "#2ecc71";
@@ -239,13 +238,13 @@ if (saveGoalBtn) {
         } else {
             alert("Lütfen geçerli bir hedef girin.");
         }
-    }); // addEventListener burada kapanıyor
-} // if (saveGoalBtn) burada kapanıyor
+    }); 
+}
  async function handleDelete(bookId) {
     if (confirm("Bu kitabı silmek istediğine emin misin?")) {
         const result = await deleteBookFromLibrary(bookId);
         if (result.success) {
-            // Bellekteki listeyi güncelle (Firebase'e tekrar gitmeye gerek kalmaz)
+            // Bellekteki listeyi günceller (Firebase'e tekrar gitmeye gerek kalmaz)
             userBooks = userBooks.filter(b => b.id !== bookId); 
             renderBooks();   // Listeyi tekrar çiz
             updateDashboard(); // Üst paneli güncelle

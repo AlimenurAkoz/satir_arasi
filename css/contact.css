@@ -1,12 +1,10 @@
-/* contact.css */
-
 /* Mesaj kutusuna özel scroll ve boyut ayarı */
 .textarea-group {
     position: relative;
     margin-bottom: 22px;
 }
 
-/* İkonun yeri input ile aynı kalsın (padding ve konumlandırma) */
+/* padding ve konumlandırma */
 .textarea-group i {
     position: absolute;
     left: 18px;
@@ -19,7 +17,6 @@
 /* Textarea: Tasarımı inputlarla aynı, sadece yüksekliği farklı */
 .contact-textarea {
     width: 100%;
-    /* Padding-top'ı ikonla hizalı, sol padding'i ikon boşluğuyla aynı yaptık */
     padding: 14px 20px 14px 50px; 
     border-radius: 12px;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -30,9 +27,9 @@
     font-size: 1rem;
     
     /* Scroll ve Boyut */
-    min-height: 120px; /* Çok kaba durmaması için ideal yükseklik */
-    resize: none;      /* Kutunun köşesinden çekip büyütmeyi engelledik */
-    overflow-y: auto;  /* Mesaj uzarsa scrollbar otomatik çıkar */
+    min-height: 120px; 
+    resize: none;      
+    overflow-y: auto; 
 }
 
 .contact-textarea:focus {

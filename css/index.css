@@ -126,11 +126,11 @@ body.auth-page {
     align-items: flex-start;
     gap: 30px;
     width: 100%;
-    flex-wrap: wrap; /* Mobilde alt alta geçmesi için nowrap yerine wrap daha güvenlidir */
+    flex-wrap: wrap; /* Mobilde alt alta geçmesi için nowrap yerine wrap kullandım*/
     margin-top: 30px;
 }
 
-/* Kart boyutunu sabitleyerek panelin büyümesini engelleyelim */
+/* Kart boyutunu sabitleyerek panelin büyümesini engellendi */
 .book-card {
     flex: 0 0 180px; /* Genişlik 180px'de sabit kalır, büyümez */
     width: 180px;

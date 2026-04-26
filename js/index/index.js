@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const safeTitle = info.title.length > 35 ? info.title.substring(0, 35) + '...' : info.title;
 
-            // Yönlendirmeyi book-detail.html sayfasına ve id parametresine çevirdik
+            // Yönlendirmeyi book-detail.html sayfasına ve id parametresine çevirdim
             return `
             <div class="book-card" onclick="window.location.href='book-detail.html?id=${bookId}'" style="cursor: pointer;">
                 <div class="book-img">

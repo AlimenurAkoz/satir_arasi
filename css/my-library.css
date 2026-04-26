@@ -231,7 +231,7 @@
     width: 200px;
 }
 
-/* --- JİLET GİBİ SCROLLBAR DÜZENLEMESİ --- */
+/* --- SCROLLBAR DÜZENLEMESİ --- */
 ::-webkit-scrollbar {
     width: 6px !important;
     height: 6px !important;

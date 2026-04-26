@@ -1,4 +1,4 @@
-/* Satır Arası - Final Düzenlenmiş Kitap Detay Sayfası */
+
 
 * {
     margin: 0;
@@ -209,15 +209,15 @@ textarea {
     outline: none;
     padding: 0;
     padding-left: 10px;
-    width: 200px; /* Sabit bir genişlik vermek daha düzenli durur */
+    width: 200px; 
 }
 
 /* Öneriler kutusunu arama çubuğuyla aynı hizaya getiriyoruz */
 .nav-right .search-suggestions {
     position: absolute;
     top: 100%;
-    right: 20px; /* Arama çubuğunun sağ boşluğuyla (margin-right) aynı olmalı */
-    width: 250px; /* Dashboard'daki input genişliğiyle uyumlu hale getirdik */
+    right: 20px; 
+    width: 250px;
     background: white;
     border-radius: 15px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
@@ -227,7 +227,6 @@ textarea {
     z-index: 1000;
     display: none;
     padding: 10px;
-    /* Kutunun input dışına taşmasını engellemek için */
     box-sizing: border-box; 
 }
 

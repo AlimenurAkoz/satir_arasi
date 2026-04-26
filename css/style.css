@@ -142,7 +142,7 @@ html, body {
     transform: translateY(0);
 }
 
-/* Menü Kapanma Koruması (Köprü) */
+/* Menü Kapanma Koruması  */
 .dropdown-menu::before {
     content: "";
     position: absolute;
@@ -185,15 +185,15 @@ html, body {
     border: 2px solid #fff;
 }
 
-/* 4. ANA FOOTER TASARIMI (Tam Kapsama & Kibar Görünüm) */
+/* 4. ANA FOOTER TASARIMI  */
 .main-footer {
-    width: 100%; /* Sağa sola tamamen sıfırlar */
-    margin-top: auto; /* İçerik az olsa bile en alta yapıştırır */
+    width: 100%; 
+    margin-top: auto; 
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-top: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 30px 0 0 0; /* Üst boşluğu azalttık */
+    padding: 30px 0 0 0; 
     color: #2c3e50;
 }
 
@@ -202,7 +202,7 @@ html, body {
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
-    padding: 0 40px 15px 40px; /* Alt boşluk azaltıldı */
+    padding: 0 40px 15px 40px; 
     flex-wrap: wrap;
     gap: 20px;
 }

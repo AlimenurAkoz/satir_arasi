@@ -52,7 +52,7 @@ if (contactForm) {
                 user_email: email,
                 message_subject: subject,
                 user_message: message,
-                status: "read", // İleride admin paneli yaparsan diye
+                status: "read", 
                 createdAt: serverTimestamp() // Sunucu saatini baz alalım
             });
 

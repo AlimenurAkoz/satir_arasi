@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
-                // Resmi küçültüp Base64'e çevir
+               
                 const compressedBase64 = await compressImage(file);
 
                 // Arayüzü anlık güncelle
@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// --- ÇIKIŞ İŞLEMİNİ TETİKLEYEN "KABLO" ---
+// --- çıkış işleminin tetiklenmesi ---
 const logoutBtn = document.getElementById('logout-btn');
 
 if (logoutBtn) {
@@ -298,7 +298,7 @@ const compressImage = (file, maxWidth = 200, maxHeight = 200) => {
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
 
-                // 0.7 kalitesinde JPEG olarak çıktı al (Boyutu inanılmaz düşürür)
+                // 0.7 kalitesinde JPEG olarak çıktı aldım(Boyutu inanılmaz düşürür)
                 resolve(canvas.toDataURL('image/jpeg', 0.7));
             };
         };

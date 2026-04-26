@@ -9,8 +9,6 @@ export async function saveBookToFirebase(book) {
 
     if (!user) {
         alert("Kitap eklemek için lütfen önce giriş yapın!");
-        // Opsiyonel: Giriş sayfasına yönlendirebilirsin
-        // window.location.href = "login.html";
         return;
     }
 
@@ -19,13 +17,13 @@ export async function saveBookToFirebase(book) {
     try {
         // 2. Veriyi "kullaniciKitapligi" koleksiyonuna, kullanıcının UID'si ile kaydet
         const docRef = await addDoc(collection(db, "kullaniciKitapligi"), {
-            userId: user.uid,           // Elif mi, Deneme mi? Buradan belli olacak.
-            userEmail: user.email,      // Takip kolaylığı için email de ekleyebilirsin
-            googleBookId: book.id,      // Arkadaşının detay sayfası için bu ID şart
+            userId: user.uid,           
+            userEmail: user.email,      
+            googleBookId: book.id,      
             title: info.title,
             authors: info.authors || ["Bilinmeyen Yazar"],
             thumbnail: info.imageLinks?.thumbnail || "https://via.placeholder.com/128x192?text=No+Cover",
-            addedAt: serverTimestamp()  // Kayıt zamanını Firebase sunucusundan al
+            addedAt: serverTimestamp()  
         });
 
         console.log("Kitap eklendi! ID:", docRef.id);

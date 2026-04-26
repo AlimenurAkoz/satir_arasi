@@ -37,7 +37,6 @@ const compressImage = (file, maxWidth = 150, maxHeight = 150) => {
                 canvas.height = height;
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
-                // 0.7 kalitesinde JPEG olarak çıktı al (Firestore limitine takılmaz)
                 resolve(canvas.toDataURL('image/jpeg', 0.7));
             };
         };

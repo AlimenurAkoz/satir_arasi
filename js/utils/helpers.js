@@ -1,1 +1,0 @@
-//yardımcı fonksiyonlar  

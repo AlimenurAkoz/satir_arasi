@@ -2,8 +2,7 @@ import { doc, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebase
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 import { db, auth } from "../firebase/firebaseConfig.js";
 
-//const authRequiredStatus = document.getElementById('authRequiredStatus');
-//const reviewSection = document.getElementById('reviewSection');
+
 
 // --- 1. URL'DEN ID ALMA VE TEMİZLEME ---
 const urlParams = new URLSearchParams(window.location.search);
@@ -117,7 +116,7 @@ async function initializeInteractiveFeatures(user) {
         if (pageTracker) pageTracker.style.display = "block";
         if (totalPagesInput.value) currentPageInput.value = totalPagesInput.value;
 
-        // --- YENİ MANTIK: Eğer henüz puan verilmemişse (rating 0 ise) yıldızları renksiz yap ---
+        // ---  Eğer henüz puan verilmemişse (rating 0 ise) yıldızları renksiz yap ---
         if (currentRating === 0) {
             stars.forEach(s => s.style.filter = "grayscale(100%)");
         } else {
@@ -187,7 +186,6 @@ async function initializeInteractiveFeatures(user) {
     }
 
     // --- KAYDETME (CREATE/UPDATE) ---
-    // --- KAYDETME (CREATE/UPDATE) ---
 if (saveButton) {
     saveButton.addEventListener('click', async () => {
         const currentPage = parseInt(currentPageInput.value) || 0;
@@ -206,8 +204,7 @@ if (saveButton) {
             return;
         }
 
-        // 3. İSİMLENDİRME STANDARTLAŞTIRMA (KRİTİK HATA BURADAYDI)
-        // Veritabanına mylibrary.js'in anladığı dilde gönderiyoruz
+        // 3. İSİMLENDİRME STANDARTLAŞTIRMA 
         let libraryStatus = "Okunacaklar"; // varsayılan
         if (selectedValue === "okunuyor") {
             libraryStatus = "Okunuyor";
@@ -225,7 +222,7 @@ if (saveButton) {
                 title: document.getElementById('bookTitle').innerText,
                 author: document.getElementById('bookAuthor').innerText,
                 cover: document.getElementById('bookCover').src,
-                status: libraryStatus, // Artık "Okuduklarım" gidiyor
+                status: libraryStatus, 
                 rating: currentRating,
                 note: userNote.value,
                 currentPage: currentPage,
