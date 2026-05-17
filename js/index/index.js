@@ -28,33 +28,52 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!popularBooksContainer) return;
 
         try {
-            // Türkiye'de popüler olan edebi türleri hedefleyen güçlü bir sorgu
-            const query = 'subject:fiction+modern+edebiyat+roman';
-
+            // Rusça kitapları engellemek için daha spesifik ve Türkçe odaklı bir sorgu
+            const query = 'subject:turkish_literature+fiction+roman';
             const response = await fetch(
-                `https://www.googleapis.com/books/v1/volumes?q=${query}&orderBy=relevance&maxResults=20&langRestrict=tr&printType=books`
+                `https://openlibrary.org/search.json?q=${query}&limit=100`
             );
-            const data = await response.json();
-            let items = data.items || [];
 
-            // Filtreleme: Akademik, ders kitabı veya ansiklopedik içerikleri ayıklıyoruz
+            if (!response.ok) throw new Error("Ağ hatası oluştu.");
+
+            const data = await response.json();
+            // Open Library verisi 'docs' içinde gelir
+            let items = data.docs || [];
             const forbiddenKeywords = [
                 'yıllığı', 'ansiklopedisi', 'sözlüğü', 'araştırmaları', 'eğitim',
                 'ders', 'tez', 'makale', 'incelemesi', 'kılavuzu', 'rapor'
             ];
 
-            const filteredBooks = items.filter(item => {
-                const title = item.volumeInfo.title?.toLowerCase() || "";
-                const hasCover = item.volumeInfo.imageLinks?.thumbnail;
+            // Senin orijinal filtreleme mantığını koruyoruz
+            const filteredBooks = items.filter(doc => {
+                const title = doc.title?.toLowerCase() || "";
+                // Kapak resmi ID'si (cover_i) olmayanları ve sıkıcı kelimeleri eliyoruz
+                const hasCover = doc.cover_i;
                 const isBoring = forbiddenKeywords.some(word => title.includes(word));
 
-                return hasCover && !isBoring;
+                // Sadece Latin alfabesi ve Türkçe/İngilizce ağırlıklı sonuçlar için basit bir kontrol
+                const isLatin = /^[A-Za-z0-9\s\u00C0-\u017F]+$/.test(doc.title?.substring(0, 5));
+
+                return hasCover && !isBoring && isLatin;
+            }).map(doc => {
+                // VERİ DÖNÜŞTÜRME: Open Library verisini senin 'render' fonksiyonunun 
+                // beklediği 'volumeInfo' yapısına birebir sokuyoruz.
+                return {
+                    volumeInfo: {
+                        title: doc.title,
+                        authors: doc.author_name || ["Bilinmeyen Yazar"],
+                        imageLinks: {
+                            thumbnail: `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
+                        }
+                    }
+                };
             });
 
-            // Filtrelenmiş listeden rastgele 3 tanesini seç (her yenilemede değişmesi için)
+            // Senin orijinal "rastgele 3 tane seç" mantığın
             const selected = filteredBooks.sort(() => 0.5 - Math.random()).slice(0, 3);
 
             if (selected.length > 0) {
+                // Format artık 'volumeInfo' içerdiği için render fonksiyonun 3 kitabı da tanıyacaktır
                 renderPopularBooks(selected);
             } else {
                 popularBooksContainer.innerHTML = '<p style="color:white;">Kitaplar şu an hazır değil.</p>';

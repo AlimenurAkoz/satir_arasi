@@ -1,2 +1,4 @@
 .env
 js/firebase/firebaseConfig.js
+.firebase/
+.firebaserc

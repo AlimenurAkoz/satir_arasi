@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const userRef = doc(db, "users", user.uid);
                 const userSnap = await getDoc(userRef);
 
-                
+
                 if (userSnap.exists()) {
                     const data = userSnap.data();
                     if (welcomeNameSpan) welcomeNameSpan.innerText = data.username || "Okur";
@@ -37,11 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     const libraryRef = collection(db, "users", user.uid, "kullaniciKitapligi");
                     const qRead = query(libraryRef, where("status", "==", "Okuduklarım"));
                     const readSnap = await getDocs(qRead);
-                    
-                    
+
+
                     readSnap.forEach(doc => {
                         const d = doc.data();
-                        if(d.readYear === currentYear || (!d.readYear && currentYear === "2026")) {
+                        if (d.readYear === currentYear || (!d.readYear && currentYear === "2026")) {
                             okunan++;
                         }
                     });
@@ -52,11 +52,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     fetchCurrentBooks(user.uid);
 
-                    
+
                     // Hoş geldin mesajı vs...
 
                     if (welcomeNameSpan) welcomeNameSpan.innerText = data.username || "Okur";
-                    
+
                     // readingGoals nesnesi varsa 2026'yı al, yoksa 0 ata
                     hedef = data.readingGoals?.["2026"] || 0;
                 }
@@ -160,9 +160,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             try {
-                const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=intitle:${term}&printType=books&orderBy=relevance&langRestrict=tr&maxResults=8`);
+                const response = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(term)}&limit=8`);
                 const data = await response.json();
-                renderSearchSuggestions(data.items || []);
+
+                // Open Library verisini senin volumeInfo yapına dönüştürüyoruz
+                const formattedItems = (data.docs || []).map(doc => ({
+                    id: doc.key.split('/').pop(), // 'OL123W' gibi ID'yi alır
+                    volumeInfo: {
+                        title: doc.title,
+                        authors: doc.author_name || ['Bilinmeyen Yazar'],
+                        imageLinks: {
+                            thumbnail: doc.cover_i ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg` : 'img/default-book.jpg'
+                        }
+                    }
+                }));
+
+                renderSearchSuggestions(formattedItems);
             } catch (error) { console.error("Arama hatası:", error); }
         });
     }
@@ -192,23 +205,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchRecommendations() {
         if (!recContainer) return;
-        recContainer.innerHTML = '<p style="text-align:center; padding:20px;">Öneriler yükleniyor...</p>';
+        recContainer.innerHTML = '<p style="text-align:center; padding:20px; color:white;">Öneriler hazırlanıyor...</p>';
+
         try {
-            const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=subject:fiction+modern+edebiyat+roman&printType=books&orderBy=relevance&langRestrict=tr&maxResults=40`);
+            // TÜRKÇE ODAKLI SORGU: Hem konu hem dil kısıtlaması ekledik
+            const query = 'subject:turkish_literature+fiction';
+            const response = await fetch(`https://openlibrary.org/search.json?q=${query}&limit=100`);
             const data = await response.json();
+
             const forbiddenKeywords = ['yıllığı', 'ansiklopedisi', 'sözlüğü', 'araştırmaları', 'dergisi', 'fakültesi', 'eğitim', 'ders', 'tez', 'makale', 'sempozyum', 'tarihi', 'rehberi', 'kılavuzu', 'incelemesi', 'üzerine', 'rapor'];
 
-            const literaryBooks = (data.items || []).filter(item => {
-                const title = item.volumeInfo.title?.toLowerCase() || "";
-                return item.volumeInfo.imageLinks?.thumbnail && !forbiddenKeywords.some(word => title.includes(word));
-            });
+            const literaryBooks = (data.docs || []).filter(doc => {
+                const title = doc.title?.toLowerCase() || "";
+                const hasCover = doc.cover_i;
+                const isBoring = forbiddenKeywords.some(word => title.includes(word));
 
-            console.log("API'den gelen toplam kitap sayısı:", data.items?.length);
-            console.log("Filtrelemeden sonra kalan kitap sayısı:", literaryBooks.length);
+                // RUSÇA ELEME: Başlığın ilk 5 karakterinde Kiril alfabesi var mı kontrol et
+                const isCyrillic = /[а-яА-Я]/.test(doc.title);
+                // Sadece Türkçe karakterleri ve Latin alfabesini kabul et
+                const isTurkishOrLatin = /^[A-Za-z0-9\s\u00C0-\u017FİıĞğÜüŞşÖöÇç]+$/.test(doc.title?.substring(0, 8));
 
+                return hasCover && !isBoring && !isCyrillic && isTurkishOrLatin;
+            }).map(doc => ({
+                id: doc.key.split('/').pop(),
+                volumeInfo: {
+                    title: doc.title,
+                    authors: doc.author_name || ['Bilinmeyen Yazar'],
+                    imageLinks: {
+                        thumbnail: `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
+                    },
+                    categories: doc.subject ? [doc.subject[0]] : ['Edebiyat']
+                }
+            }));
+
+            // Havuzda yeterli kitap olduğundan emin olmak için 6 kitap seç
             const selected = literaryBooks.sort(() => 0.5 - Math.random()).slice(0, 6);
-            renderRecommendations(selected);
-        } catch (error) { console.error("Öneriler çekilemedi:", error); }
+
+            if (selected.length > 0) {
+                renderRecommendations(selected);
+            } else {
+                // Eğer Türkçe sonuç az gelirse daha genel ama güvenli bir yedek sorgu at
+                recContainer.innerHTML = '<p style="color:white;">Uygun kitap bulunamadı, lütfen tekrar deneyin.</p>';
+            }
+        } catch (error) {
+            console.error("Öneriler çekilemedi:", error);
+            recContainer.innerHTML = '<p style="color:white;">Bağlantı hatası.</p>';
+        }
     }
 
     function renderRecommendations(books) {
