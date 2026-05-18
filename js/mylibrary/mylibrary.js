@@ -1,8 +1,7 @@
-import { collection, getDocs,doc,getDoc,updateDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+import { collection, getDocs, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 import { auth, db } from "../firebase/firebaseConfig.js";
 import { deleteBookFromLibrary } from "../books/deleteBook.js";
-import { updateUserReadingGoal } from "../books/updateBook.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     const tabButtons = document.querySelectorAll('.tab-btn');
@@ -12,36 +11,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('librarySearchInput');
     const sortSelect = document.querySelector('.sort-select');
 
-    const goalYearSelect = document.getElementById('goalYearSelect');
     const yearlyGoalInput = document.getElementById('yearlyGoalInput');
     const saveGoalBtn = document.getElementById('saveGoalBtn');
 
     let userBooks = [];
-    let userGoals = JSON.parse(localStorage.getItem('myUserGoals')) 
+    let userGoals = {}; 
     let currentActiveTab = 'Tümü';
 
     onAuthStateChanged(auth, async (user) => {
         if (user) {
-            // Firestore'dan kullanıcı verisini çek
             const userRef = doc(db, "users", user.uid);
             const userSnap = await getDoc(userRef);
 
-            // Eğer veritabanında okuma hedefi varsa onu al, yoksa 0 ata
             const userData = userSnap.exists() ? userSnap.data() : {};
             userGoals = userData.readingGoals || { "2026": 0 };
 
             if (booksContainer) booksContainer.innerHTML = '<p style="text-align:center; width:100%; color:#777; padding:40px;">Kütüphaneniz yükleniyor <i class="fa-solid fa-spinner fa-spin"></i></p>';
 
             try {
-
-                // Kullanıcının kütüphanesini Firebase'den çek
                 const libraryRef = collection(db, "users", user.uid, "kullaniciKitapligi");
                 const querySnapshot = await getDocs(libraryRef);
                 userBooks = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
                 renderBooks('Tümü');
                 updateDashboard();
-                renderGoal(); // Global userGoals değişkenini kullanır
+                renderGoal(); 
             } catch (error) {
                 console.error("Kitaplar çekilirken hata:", error);
             }
@@ -57,7 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
 
-        // 1. FİLTRELEME
         let filtered = userBooks.filter(b => {
             const matchesStatus = filter === 'Tümü' || b.status === filter;
             const title = b.title ? b.title.toLowerCase() : "";
@@ -66,13 +59,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return matchesStatus && matchesSearch;
         });
 
-        // 2. SIRALAMA MANTIĞI 
         if (sortSelect) {
             if (sortSelect.value === "rating" || sortSelect.value === "En Yüksek Puanlılar") {
-                // Sayısal karşılaştırma yaparak puanları sıralıyoruz
                 filtered.sort((a, b) => (Number(b.rating) || 0) - (Number(a.rating) || 0));
             } else {
-                // En Yeniler: Firebase'den gelen sırayı ters çevirip son ekleneni başa alırız
                 filtered.reverse();
             }
         }
@@ -82,11 +72,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // 3. EKRANA BASMA
         filtered.forEach(book => {
             const bookCard = document.createElement('div');
             bookCard.className = 'glass-card book-card';
             bookCard.style.cursor = 'pointer';
+            
+            // Open Library ID parametre senkronizasyonu
             bookCard.onclick = () => window.location.href = `book-detail.html?id=${book.id}`;
             const safeTitle = book.title ? book.title.replace(/"/g, '&quot;') : "Bilinmeyen";
 
@@ -121,7 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 progress = progress > 100 ? 100 : progress;
 
-                // GÖRSEL KAYMASINI ENGELLEYEN STYLE DÜZENLEMESİ
                 gridContainer.innerHTML += `
                     <div class="reading-card" style="display: flex; gap: 15px; background: rgba(255, 255, 255, 0.4); padding: 15px; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.5); align-items: center; margin-bottom: 10px;">
                         <div class="reading-card-icon" style="width: 80px; height: 120px; flex-shrink: 0; overflow: hidden; border-radius: 8px;">
@@ -143,12 +133,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- YILLARA GÖRE OKUMA HEDEFİ (2026 SABİT) ---
     function renderGoal() {
         const currentYear = "2026"; 
         const currentGoal = userGoals[currentYear] || 0;
 
-        // Sadece 2026 yılında okunanları filtrele (readYear boşsa da 2026 sayabiliriz)
         const booksInYear = userBooks.filter(b =>
             b.status === "Okuduklarım" &&
             (b.readYear === currentYear || !b.readYear)
@@ -165,12 +153,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const progressCircle = document.querySelector('.circular-progress');
         if (progressCircle) {
             const degree = (goalProgress / 100) * 360;
-            progressCircle.style.background = `conic-gradient(#4a6b6f ${degree}deg, #e0e0e0 0deg)`;;
+            progressCircle.style.background = `conic-gradient(#4a6b6f ${degree}deg, #e0e0e0 0deg)`;
         }
     }
 
-
-    // Kaydet butonunu güncelle
     if (saveGoalBtn) {
         saveGoalBtn.addEventListener('click', async () => {
             if (!auth.currentUser) return;
@@ -178,7 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 const userRef = doc(db, "users", auth.currentUser.uid);
-                // Firestore'da iç içe alan (nested field) güncelleme
                 await updateDoc(userRef, {
                     "readingGoals.2026": newGoal
                 });
@@ -187,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderGoal();
 
                 alert("Hedefiniz başarıyla güncellendi!");
-                window.location.reload(); // Sayfayı yeniler
+                window.location.reload();
             } catch (e) {
                 console.error("Kaydetme hatası:", e);
                 alert("Hedef kaydedilemedi.");
@@ -205,52 +190,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (searchInput) searchInput.addEventListener('input', () => renderBooks(currentActiveTab));
     if (sortSelect) sortSelect.addEventListener('change', () => renderBooks(currentActiveTab));
-    if (goalYearSelect) goalYearSelect.addEventListener('change', renderGoal);
 });
-// --- OKUMA HEDEFİ KAYDETME BLOĞU ---
-if (saveGoalBtn) {
-    saveGoalBtn.addEventListener('click', async () => {
-        const newGoal = parseInt(yearlyGoalInput.value);
-        const user = auth.currentUser;
-
-        if (user && newGoal > 0) {
-            try {
-                const userRef = doc(db, "users", user.uid);
-              
-
-                // Arayüzü güncelle (Çember ve rakamlar)
-                renderGoal();
-
-                // Görsel geri bildirim 
-                const originalText = saveGoalBtn.innerText;
-                saveGoalBtn.innerText = "✓";
-                saveGoalBtn.style.background = "#2ecc71";
-
-                setTimeout(() => {
-                    saveGoalBtn.innerText = originalText;
-                    saveGoalBtn.style.background = "#4a6b6f";
-                }, 1000);
-
-            } catch (error) {
-                console.error("Firebase kayıt hatası:", error);
-                alert("Hedef kaydedilemedi.");
-            }
-        } else {
-            alert("Lütfen geçerli bir hedef girin.");
-        }
-    }); 
-}
- async function handleDelete(bookId) {
-    if (confirm("Bu kitabı silmek istediğine emin misin?")) {
-        const result = await deleteBookFromLibrary(bookId);
-        if (result.success) {
-            // Bellekteki listeyi günceller (Firebase'e tekrar gitmeye gerek kalmaz)
-            userBooks = userBooks.filter(b => b.id !== bookId); 
-            renderBooks();   // Listeyi tekrar çiz
-            updateDashboard(); // Üst paneli güncelle
-            renderGoal();      // Hedef grafiğini güncelle
-        }
-    }
-}   
-
-

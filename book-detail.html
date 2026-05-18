@@ -5,9 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kitap Detayı - Satır Arası</title>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/detail.css">
 </head>
@@ -94,20 +92,27 @@
 
             <div class="book-summary">
                 <h3>Kitap Özeti</h3>
-                <p id="bookDescription">
-                    Özet...
-                </p>
+                <p id="bookDescription">Özet...</p>
             </div>
-
         </div>
 
         <div class="review-section" id="reviewSection">
-            <h3>Kişisel Değerlendirme</h3>
+            <h3 style="font-size: 1.4rem; font-weight: 700; color: #2c3e50; margin-bottom: 6px;">Kişisel Değerlendirme
+            </h3>
 
-            <div class="stars" id="starRating">
-                <p>Puanınız: <span style="cursor:pointer">⭐</span><span style="cursor:pointer">⭐</span><span
-                        style="cursor:pointer">⭐</span><span style="cursor:pointer">⭐</span><span
-                        style="cursor:pointer">⭐</span></p>
+            <div class="stars" id="starRating" style="width: 100%; display: block; clear: both; margin-bottom: 20px;">
+                <p
+                    style="margin-bottom: 12px; display: block; width: 100%; color: #555; font-weight: 600; font-size: 1.2rem;">
+                    Puanınız:</p>
+
+                <div
+                    style="display: flex; gap: 6px; font-size: 2.3rem; width: 100%; justify-content: flex-start; align-items: center; line-height: 1;">
+                    <span style="cursor:pointer;" aria-label="1 yıldız" role="button">⭐</span>
+                    <span style="cursor:pointer;" aria-label="2 yıldız" role="button">⭐</span>
+                    <span style="cursor:pointer;" aria-label="3 yıldız" role="button">⭐</span>
+                    <span style="cursor:pointer;" aria-label="4 yıldız" role="button">⭐</span>
+                    <span style="cursor:pointer;" aria-label="5 yıldız" role="button">⭐</span>
+                </div>
             </div>
 
             <div class="note-area">
@@ -115,7 +120,6 @@
                 <br>
                 <textarea id="userNote" rows="5" cols="40" maxlength="2000"
                     placeholder="Bu kitap hakkında ne düşünüyorsunuz? (Kendinize notlar...)"></textarea>
-
                 <div id="charCounter">0 / 2000</div>
             </div>
             <br>
