@@ -20,6 +20,19 @@ import {
     getDocs
 } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    iconColor: '#4a6b6f', // Temandaki yeşil tonu
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- ELEMENT SEÇİCİLER ---
     const navButtons = document.querySelectorAll('.nav-btn[data-target]');
@@ -125,37 +138,42 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!file) return;
 
             if (!user) {
-                alert("Oturum süresi dolmuş, lütfen tekrar giriş yapın.");
+                Toast.fire({ icon: 'warning', title: 'Oturum süresi dolmuş, lütfen tekrar giriş yapın.' });
                 return;
             }
 
             try {
-               
+
                 const compressedBase64 = await compressImage(file);
 
                 // Arayüzü anlık güncelle
-                if (avatarPreview) avatarPreview.src =compressedBase64;
+                if (avatarPreview) avatarPreview.src = compressedBase64;
 
                 // Firestore'daki kullanıcı dökümanını güncelle
                 const userRef = doc(db, "users", user.uid);
                 await updateDoc(userRef, {
-                    photoURL:compressedBase64
+                    photoURL: compressedBase64
                 });
 
                 // Firebase Auth üzerindeki profili güncelle
                 await updateProfile(user, {
-                    photoURL:compressedBase64
+                    photoURL: compressedBase64
                 });
 
                 // Navbar'daki küçük avatarı da güncelle
                 const headerAvatar = document.getElementById('headerAvatar');
-                if (headerAvatar) headerAvatar.src =compressedBase64;
+                if (headerAvatar) headerAvatar.src = compressedBase64;
 
-                alert("Profil fotoğrafı başarıyla güncellendi!");
+                Toast.fire({ icon: 'success', title: 'Profil fotoğrafı güncellendi!' });
 
             } catch (error) {
                 console.error("Fotoğraf boyutu çok büyük veya hata oluştu:", error);
-                alert("Hata: FotoğHata: Fotoğraf boyutu limitleri aşıyor, lütfen daha küçük bir görsel deneyin.");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hata!',
+                    text: 'Fotoğraf boyutu limitleri aşıyor, lütfen daha küçük bir görsel deneyin.',
+                    confirmButtonColor: '#4a6b6f'
+                });
             }
         });
     }
@@ -173,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 // Mevcut isimle aynı mı kontrolü
                 if (newName === user.displayName) {
-                    alert("Zaten bu kullanıcı adını kullanıyorsunuz.");
+                    Toast.fire({ icon: 'info', title: 'Zaten bu kullanıcı adını kullanıyorsunuz.' });
                     return;
                 }
 
@@ -192,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Firebase Auth Profil Güncelleme
                 await updateProfile(user, { displayName: newName });
 
-                alert("Kullanıcı adınız başarıyla güncellendi!");
+                Toast.fire({ icon: 'success', title: 'Kullanıcı adınız güncellendi!' });
 
                 // Sidebar ve Navbar'daki isimleri anlık güncelle
                 if (sidebarName) sidebarName.innerText = newName;
@@ -201,7 +219,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             } catch (error) {
                 console.error("Güncelleme hatası:", error);
-                alert("Güncelleme hatası: " + error.message);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Güncelleme Başarısız',
+                    text: 'Bir hata oluştu: ' + error.message,
+                    confirmButtonColor: '#4a6b6f'
+                });
             }
         });
     }
@@ -220,10 +243,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 await reauthenticateWithCredential(user, credential);
                 await updatePassword(user, newPassword);
 
-                alert("Şifreniz başarıyla değiştirildi.");
+                Toast.fire({ icon: 'success', title: 'Şifreniz başarıyla değiştirildi.' });
                 updatePasswordForm.reset();
             } catch (error) {
-                alert("Hata: Mevcut şifre yanlış veya yeni şifre zayıf. " + error.message);
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Şifre Güncellenemedi',
+                    text: 'Mevcut şifreniz yanlış olabilir veya yeni şifreniz güvenlik standartlarına (en az 6 karakter) uymuyor olabilir.',
+                    footer: '<small>Hata detayı: ' + error.message + '</small>', // Teknik detayı daha küçük gösterelim
+                    confirmButtonColor: '#4a6b6f'
+                });
             }
         });
     }
@@ -231,24 +260,39 @@ document.addEventListener('DOMContentLoaded', () => {
     // Hesabı kalıcı olarak silme
     const deleteAccountBtn = document.getElementById('delete-account-btn');
     if (deleteAccountBtn) {
-        deleteAccountBtn.addEventListener('click', async () => {
-            const user = auth.currentUser;
-            if (!user) return;
-
-            if (confirm("Hesabınızı silmek istediğinize emin misiniz?") && confirm("Son kararınız mı?")) {
-                try {
-                    await deleteDoc(doc(db, "users", user.uid));
-                    await deleteUser(user);
-                    alert("Hesabınız silindi.");
-                    window.location.href = 'index.html';
-                } catch (error) {
-                    if (error.code === 'auth/requires-recent-login') {
-                        alert("Lütfen tekrar giriş yapıp silme işlemini deneyin.");
-                    } else {
-                        alert("Hata: " + error.message);
+        deleteAccountBtn.addEventListener('click', () => {
+            Swal.fire({
+                title: 'Emin misiniz?',
+                text: "Bu işlem geri alınamaz! Tüm verileriniz kalıcı olarak silinecektir.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#4a6b6f',
+                confirmButtonText: 'Evet, hesabımı sil!',
+                cancelButtonText: 'Vazgeç'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const user = auth.currentUser;
+                    try {
+                        await deleteDoc(doc(db, "users", user.uid));
+                        await deleteUser(user);
+                        Swal.fire({
+                            title: 'Silindi!',
+                            text: 'Hesabınız başarıyla silindi.',
+                            icon: 'success',
+                            confirmButtonColor: '#4a6b6f'
+                        }).then(() => {
+                            window.location.href = 'index.html';
+                        });
+                    } catch (error) {
+                        if (error.code === 'auth/requires-recent-login') {
+                            Swal.fire('Güvenlik Uyarısı', 'Kritik işlemler için tekrar giriş yapmanız gerekiyor.', 'error');
+                        } else {
+                            Toast.fire({ icon: 'error', title: 'Bir hata oluştu.' });
+                        }
                     }
                 }
-            }
+            });
         });
     }
 });
@@ -257,13 +301,26 @@ document.addEventListener('DOMContentLoaded', () => {
 const logoutBtn = document.getElementById('logout-btn');
 
 if (logoutBtn) {
-    logoutBtn.addEventListener('click', async () => {
-        try {
-            await signOut(auth); // Firebase'e çıkış yap dedik
-            window.location.href = 'index.html'; // Kullanıcıyı ana sayfaya gönderdik
-        } catch (error) {
-            alert("Çıkış yapılırken bir hata oluştu: " + error.message);
-        }
+    logoutBtn.addEventListener('click', () => {
+        Swal.fire({
+            title: 'Çıkış Yapılıyor',
+            text: "Oturumunuzu kapatmak istediğinize emin misiniz?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#4a6b6f',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet, çıkış yap',
+            cancelButtonText: 'Vazgeç'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await signOut(auth);
+                    window.location.href = 'index.html';
+                } catch (error) {
+                    Toast.fire({ icon: 'error', title: 'Çıkış yapılırken hata oluştu.' });
+                }
+            }
+        });
     });
 }
 

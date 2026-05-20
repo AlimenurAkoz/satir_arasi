@@ -4,7 +4,7 @@ import { db, auth } from "../firebase/firebaseConfig.js";
 
 // --- 1. URL'DEN ID ALMA VE TEMİZLEME ---
 const urlParams = new URLSearchParams(window.location.search);
-const currentBookId = urlParams.get('id'); 
+const currentBookId = urlParams.get('id');
 let currentRating = 0;
 
 if (!currentBookId) {
@@ -33,7 +33,7 @@ async function fetchBookFromAPI() {
         if (!response.ok) throw new Error("Kitap detayları alınamadı.");
 
         const data = await response.json();
-        
+
         // Kapak Resmi Çözümü
         let coverImg = 'img/default-book.jpg';
         if (data.covers && data.covers.length > 0) {
@@ -61,13 +61,13 @@ async function fetchBookFromAPI() {
                 } catch (e) { console.error("Yazar adı API'den alınamadı:", e); }
             }
         }
-        
+
         if (document.getElementById('bookCover')) document.getElementById('bookCover').src = coverImg;
         if (document.getElementById('bookTitle')) document.getElementById('bookTitle').innerText = title;
         if (document.getElementById('bookAuthor')) document.getElementById('bookAuthor').innerText = authorText;
         if (document.getElementById('bookDescription')) document.getElementById('bookDescription').innerHTML = description;
-        
-    } catch (error) { 
+
+    } catch (error) {
         console.error("API Hatası:", error);
     }
 }
@@ -93,11 +93,11 @@ async function initializeInteractiveFeatures(user) {
     const statusSelect = document.getElementById('readingStatus');
     const userNote = document.getElementById('userNote');
     const saveButton = document.getElementById('saveReviewBtn');
-    const deleteBtn = document.getElementById('deleteBookBtn'); 
+    const deleteBtn = document.getElementById('deleteBookBtn');
     const pageTracker = document.getElementById('pageTracker');
     const currentPageInput = document.getElementById('currentPage');
     const totalPagesInput = document.getElementById('totalPages');
-    
+
     const bookRef = doc(db, "users", user.uid, "kullaniciKitapligi", currentBookId);
 
     // --- FIREBASE'DEN MEVCUT VERİYİ ÇEK ---
@@ -105,7 +105,7 @@ async function initializeInteractiveFeatures(user) {
         const bookSnap = await getDoc(bookRef);
         if (bookSnap.exists()) {
             const data = bookSnap.data();
-            
+
             if (document.getElementById('bookAuthor') && data.author) {
                 document.getElementById('bookAuthor').innerText = data.author;
             }
@@ -115,7 +115,7 @@ async function initializeInteractiveFeatures(user) {
             if (totalPagesInput) totalPagesInput.value = data.totalPages || '';
             if (userNote) userNote.value = data.note || '';
             currentRating = data.rating || 0;
-            
+
             stars.forEach((s, i) => s.style.filter = (i < currentRating) ? "grayscale(0%)" : "grayscale(100%)");
             if (deleteBtn) deleteBtn.style.display = 'inline-block';
         }
@@ -124,14 +124,14 @@ async function initializeInteractiveFeatures(user) {
     function checkRatingStatus() {
         const starRatingDiv = document.getElementById('starRating');
         const stars = document.querySelectorAll('#starRating span');
-        
+
         if (statusSelect.value === "okudum") {
-            if (starRatingDiv) { 
-                starRatingDiv.style.opacity = "1"; 
-                starRatingDiv.style.pointerEvents = "auto"; 
+            if (starRatingDiv) {
+                starRatingDiv.style.opacity = "1";
+                starRatingDiv.style.pointerEvents = "auto";
             }
             if (pageTracker) pageTracker.style.display = "block";
-            
+
             // --- OTOMATİK SAYFA EŞİTLEME KONTROLÜ ---
             if (totalPagesInput.value && parseInt(totalPagesInput.value) > 0) {
                 currentPageInput.value = totalPagesInput.value;
@@ -143,12 +143,12 @@ async function initializeInteractiveFeatures(user) {
                 stars.forEach((s, i) => s.style.filter = (i < currentRating) ? "grayscale(0%)" : "grayscale(100%)");
             }
         } else {
-            if (starRatingDiv) { 
-                starRatingDiv.style.opacity = "0.4"; 
-                starRatingDiv.style.pointerEvents = "none"; 
+            if (starRatingDiv) {
+                starRatingDiv.style.opacity = "0.4";
+                starRatingDiv.style.pointerEvents = "none";
             }
             stars.forEach(s => s.style.filter = "grayscale(100%)");
-            
+
             if (statusSelect.value === "okunuyor") {
                 if (pageTracker) pageTracker.style.display = "block";
             } else {
@@ -197,13 +197,13 @@ async function initializeInteractiveFeatures(user) {
 
             if (currentPage > totalPages) {
                 alert(`Hata: Sayfa sayısı sınırı aşıldı!`);
-                return; 
+                return;
             }
 
             // --- MANDATORY PUAN DOĞRULAMA KONTROLÜ ---
             if (selectedValue === "okudum" && currentRating === 0) {
                 alert("Lütfen bitirdiğiniz kitap için bir puan (yıldız) seçin.");
-                return; 
+                return;
             }
 
             let libraryStatus = "Okunacaklar";
@@ -220,7 +220,7 @@ async function initializeInteractiveFeatures(user) {
                     title: document.getElementById('bookTitle').innerText,
                     author: document.getElementById('bookAuthor').innerText,
                     cover: document.getElementById('bookCover').src,
-                    status: libraryStatus, 
+                    status: libraryStatus,
                     rating: currentRating,
                     note: userNote.value,
                     currentPage: currentPage,
@@ -229,10 +229,33 @@ async function initializeInteractiveFeatures(user) {
                     updatedAt: new Date()
                 }, { merge: true });
 
-                alert("Değişiklikler kaydedildi!");
-                window.location.href = "my-library.html"; 
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1500, // 1.5 saniye yeterli olacaktır
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Değişiklikler kaydedildi!',
+                    iconColor: '#4a6b6f',
+                }).then(() => {
+                    // Bildirim bittikten sonra yönlendir
+                    window.location.href = "my-library.html";
+                });
             } catch (error) {
-                console.error("Kayıt Hatası:", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hata!',
+                    text: 'Kaydedilemedi, lütfen tekrar deneyin.',
+                    confirmButtonColor: '#4a6b6f'
+                });
                 saveButton.innerText = "Kaydet";
                 saveButton.disabled = false;
             }
@@ -242,10 +265,10 @@ async function initializeInteractiveFeatures(user) {
     // --- YILDIZ TIKLAMA VE DINAMIK ERİŞİLEBİLİRLİK SÖYLEMİ ---
     stars.forEach((star, index) => {
         star.addEventListener('click', () => {
-            currentRating = index + 1; 
+            currentRating = index + 1;
             stars.forEach((s, i) => {
                 s.style.filter = (i < currentRating) ? "grayscale(0%)" : "grayscale(100%)";
-                
+
                 if (i === index) {
                     s.setAttribute('aria-label', `${i + 1} yıldız, seçildi`);
                 } else {

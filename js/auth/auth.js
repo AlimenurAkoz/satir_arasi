@@ -8,6 +8,15 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    iconColor: '#4a6b6f'
+});
+
 // Resmi küçültüp optimize eden fonksiyon
 const compressImage = (file, maxWidth = 150, maxHeight = 150) => {
     return new Promise((resolve, reject) => {
@@ -186,8 +195,14 @@ if (loginForm) {
             loginBtn.innerText = "Giriş Yap";
             loginBtn.disabled = false;
             console.error("Giriş hatası:", error);
-            alert("E-posta veya şifre hatalı.");
+
+            // YENİ BİLDİRİM
+            Toast.fire({
+                icon: 'error',
+                title: 'E-posta veya şifre hatalı!'
+            });
         }
+
     });
 }
 
@@ -254,8 +269,14 @@ if (registerForm) {
         } catch (error) {
             submitBtn.innerText = "Kayıt Ol";
             submitBtn.disabled = false;
-            console.error("HATA! Hata Detayı:", error.code, error.message);
-            alert("Kayıt sırasında hata oluştu: " + error.message);
+            console.error("HATA!", error);
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Kayıt Başarısız',
+                text: 'Hata: ' + error.message,
+                confirmButtonColor: '#4a6b6f'
+            });
         }
     });
 }
@@ -291,16 +312,33 @@ if (profileDropdown && dropdownMenu) {
 }
 
 // Çıkış yapma işlemi
+// Çıkış yapma işlemi (Güncellenmiş Modal Hali)
 if (logoutBtn) {
-    logoutBtn.addEventListener('click', async (e) => {
+    logoutBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (confirm("Çıkış yapmak istediğinize emin misiniz?")) {
-            try {
-                await signOut(auth);
-                window.location.href = 'index.html';
-            } catch (error) {
-                console.error("Çıkış hatası:", error);
+
+        Swal.fire({
+            title: 'Çıkış Yapılıyor',
+            text: "Oturumunuzu kapatmak istediğinize emin misiniz?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#4a6b6f',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet, çıkış yap',
+            cancelButtonText: 'Vazgeç'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await signOut(auth);
+                    window.location.href = 'index.html';
+                } catch (error) {
+                    console.error("Çıkış hatası:", error);
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Çıkış yapılırken bir hata oluştu.'
+                    });
+                }
             }
-        }
+        });
     });
 }
