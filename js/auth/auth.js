@@ -74,6 +74,40 @@ const navLogo = document.querySelector('.nav-logo');
 const navContactLink = document.getElementById('navContactLink');
 const navBooksLink = document.getElementById('navBooksLink');
 
+// Mobil Menü Açma/Kapama İşlemi
+const mobileToggle = document.getElementById('mobileToggle');
+const mainNav = document.querySelector('.main-nav');
+
+if (mobileToggle && mainNav) {
+    mobileToggle.addEventListener('click', () => {
+        // 'mobile-open' class'ını ekler veya çıkarır
+        mainNav.classList.toggle('mobile-open');
+
+        // İkonu değiştir (İsteğe bağlı: Üç çizgiyi X ikonuna çevirir)
+        const icon = mobileToggle.querySelector('i');
+        if (mainNav.classList.contains('mobile-open')) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-xmark');
+        } else {
+            icon.classList.remove('fa-xmark');
+            icon.classList.add('fa-bars');
+        }
+    });
+}
+
+const profileTrigger = document.querySelector('.profile-trigger');
+const userDropdown = document.querySelector('.user-profile-dropdown');
+
+if (profileTrigger && userDropdown) {
+    profileTrigger.addEventListener('click', (e) => {
+        // Eğer mobildeysek hover yerine tıklama class'ını tetikle
+        if (window.innerWidth <= 768) {
+            e.stopPropagation();
+            userDropdown.classList.toggle('active');
+        }
+    });
+}
+
 // Oturum takibi
 onAuthStateChanged(auth, async (user) => {
     const currentPath = window.location.pathname.toLowerCase();
