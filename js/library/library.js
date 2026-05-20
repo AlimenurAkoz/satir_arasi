@@ -12,10 +12,10 @@ window.addEventListener('DOMContentLoaded', () => {
     if (searchQuery) {
         // Arama kutusuna gelen kelimeyi yaz
         const inputField = document.getElementById('searchInput');
-        if(inputField) inputField.value = searchQuery;
+        if (inputField) inputField.value = searchQuery;
 
         // Otomatik aramayı başlat
-        fetchBooks(searchQuery); 
+        fetchBooks(searchQuery);
     }
 });
 
@@ -36,12 +36,12 @@ searchBtn.addEventListener('click', () => {
 
 async function fetchBooks(query) {
     booksContainer.innerHTML = '<p>Kitaplar aranıyor...</p>';
-    
+
     try {
-        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=20`);
+        const response = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=24`);
         const data = await response.json();
-        
-        displayBooks(data.items);
+
+        displayBooks(data.docs);
     } catch (error) {
         console.error("Hata oluştu:", error);
         booksContainer.innerHTML = '<p>Bir hata oluştu, lütfen tekrar deneyin.</p>';
@@ -51,32 +51,38 @@ async function fetchBooks(query) {
 
 
 function displayBooks(books) {
-    booksContainer.innerHTML = ''; 
+    booksContainer.innerHTML = '';
     if (!books || books.length === 0) {
-        bookRequester.toggleVisibility(true); // İstek formunu göster
-        booksContainer.innerHTML ='<div style="grid-column: 1/-1; width: 100%;"><p class="no-results">Aradığınız kitap bulunamadı.</p></div>' ;
-        return; // Fonksiyonu burada kes, aşağıya devam etmesin
+        bookRequester.toggleVisibility(true);
+        booksContainer.innerHTML = '<div style="grid-column: 1/-1; width: 100%;"><p class="no-results">Aradığınız kitap bulunamadı.</p></div>';
+        return;
     }
 
-    bookRequester.toggleVisibility(false); // Kitap varsa formu gizle
+    bookRequester.toggleVisibility(false);
 
     books.forEach(book => {
-        const info = book.volumeInfo;
-        const thumbnail = info.imageLinks ? info.imageLinks.thumbnail : 'https://via.placeholder.com/128x192?text=Kapak+Yok';
-        
-        // Kitap kartını oluştur
+        // Doğru değişkenleri tanımlıyoruz
+        const bookId = book.key ? book.key.split('/').pop() : '';
+        const title = book.title || "İsimsiz Kitap";
+        const authors = book.author_name ? book.author_name.join(', ') : 'Bilinmeyen Yazar';
+
+        const thumbnail = book.cover_i
+            ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
+            : 'img/default-book.jpg';
+
         const bookCard = document.createElement('div');
         bookCard.className = 'book-card';
-       
+
+        // BURASI KRİTİK: Değişken isimlerini (title, authors, bookId) kodla eşitledik
         bookCard.innerHTML = `
-           <img src="${thumbnail}" 
-               alt="${info.title}" 
-               loading="lazy" 
-               onerror="this.onerror=null; this.src='img/default-book.jpg';">
+            <img src="${thumbnail}" 
+                 alt="${title}" 
+                 loading="lazy" 
+                 onerror="this.onerror=null; this.src='img/default-book.jpg';">
             <div class="book-info">
-                <h3>${info.title}</h3>
-                <p>${info.authors ? info.authors.join(', ') : 'Bilinmeyen Yazar'}</p>
-                <button class="view-btn" data-id="${book.id}">Kitabı İncele</button>
+                <h3>${title}</h3>
+                <p>${authors}</p>
+                <button class="view-btn" data-id="${bookId}">Kitabı İncele</button>
             </div>
         `;
         booksContainer.appendChild(bookCard);
