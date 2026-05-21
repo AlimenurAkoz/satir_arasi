@@ -100,6 +100,15 @@ async function initializeInteractiveFeatures(user) {
 
     const bookRef = doc(db, "users", user.uid, "kullaniciKitapligi", currentBookId);
 
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        iconColor: '#4a6b6f'
+    });
+    
     // --- FIREBASE'DEN MEVCUT VERİYİ ÇEK ---
     try {
         const bookSnap = await getDoc(bookRef);
@@ -178,14 +187,35 @@ async function initializeInteractiveFeatures(user) {
     }
 
     if (deleteBtn) {
-        deleteBtn.addEventListener('click', async () => {
-            if (confirm("Bu kitabı kütüphanenizden silmek istediğinize emin misiniz?")) {
-                try {
-                    await deleteDoc(bookRef);
-                    alert("Kitap kütüphanenizden kaldırıldı.");
-                    window.location.href = "my-library.html";
-                } catch (e) { console.error("Silme Hatası:", e); }
-            }
+        deleteBtn.addEventListener('click', () => {
+            Swal.fire({
+                title: 'Emin misiniz?',
+                text: "Bu kitap kütüphanenizden kalıcı olarak silinecektir.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#4a6b6f',
+                confirmButtonText: 'Evet, sil',
+                cancelButtonText: 'Vazgeç'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        await deleteDoc(bookRef);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Silindi!',
+                            text: 'Kitap kütüphanenizden kaldırıldı.',
+                            confirmButtonColor: '#4a6b6f',
+                            timer: 1500
+                        }).then(() => {
+                            window.location.href = "my-library.html";
+                        });
+                    } catch (e) {
+                        console.error("Silme Hatası:", e);
+                        Toast.fire({ icon: 'error', title: 'Silme işlemi başarısız oldu.' });
+                    }
+                }
+            });
         });
     }
 
@@ -196,13 +226,21 @@ async function initializeInteractiveFeatures(user) {
             const selectedValue = statusSelect.value;
 
             if (currentPage > totalPages) {
-                alert(`Hata: Sayfa sayısı sınırı aşıldı!`);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hata!',
+                    text: 'Mevcut sayfa, toplam sayfa sayısından fazla olamaz.',
+                    confirmButtonColor: '#4a6b6f'
+                });
                 return;
             }
 
-            // --- MANDATORY PUAN DOĞRULAMA KONTROLÜ ---
+            // Puan doğrulama kontrolü (Okunan kitaplar için)
             if (selectedValue === "okudum" && currentRating === 0) {
-                alert("Lütfen bitirdiğiniz kitap için bir puan (yıldız) seçin.");
+                Toast.fire({
+                    icon: 'warning',
+                    title: 'Lütfen kitap için bir puan seçin.'
+                });
                 return;
             }
 

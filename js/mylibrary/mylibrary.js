@@ -13,9 +13,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const yearlyGoalInput = document.getElementById('yearlyGoalInput');
     const saveGoalBtn = document.getElementById('saveGoalBtn');
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        iconColor: '#4a6b6f'
+    });
 
     let userBooks = [];
-    let userGoals = {}; 
+    let userGoals = {};
     let currentActiveTab = 'Tümü';
 
     onAuthStateChanged(auth, async (user) => {
@@ -35,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 renderBooks('Tümü');
                 updateDashboard();
-                renderGoal(); 
+                renderGoal();
             } catch (error) {
                 console.error("Kitaplar çekilirken hata:", error);
             }
@@ -76,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const bookCard = document.createElement('div');
             bookCard.className = 'glass-card book-card';
             bookCard.style.cursor = 'pointer';
-            
+
             // Open Library ID parametre senkronizasyonu
             bookCard.onclick = () => window.location.href = `book-detail.html?id=${book.id}`;
             const safeTitle = book.title ? book.title.replace(/"/g, '&quot;') : "Bilinmeyen";
@@ -134,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderGoal() {
-        const currentYear = "2026"; 
+        const currentYear = "2026";
         const currentGoal = userGoals[currentYear] || 0;
 
         const booksInYear = userBooks.filter(b =>
@@ -171,11 +179,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 userGoals["2026"] = newGoal;
                 renderGoal();
 
-                alert("Hedefiniz başarıyla güncellendi!");
-                window.location.reload();
+                // Başarı Bildirimi
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Hedefiniz başarıyla güncellendi!'
+                });
             } catch (e) {
                 console.error("Kaydetme hatası:", e);
-                alert("Hedef kaydedilemedi.");
+
+                // Hata Bildirimi
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hata!',
+                    text: 'Hedef kaydedilemedi, lütfen tekrar deneyin.',
+                    confirmButtonColor: '#4a6b6f'
+                });
             }
         });
     }
