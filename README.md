@@ -36,6 +36,6 @@
 | **Backend as a Service (BaaS)** | Firebase |
 | **Veritabanı** | Firestore Database |
 | **Kimlik Doğrulama** | Firebase Authentication |
-| **API & Araçlar** | Google Books API |
+| **API & Araçlar** | Open Library API |
 | **İkon Kütüphanesi** | Font Awesome |
 | **Tipografi** | Google Fonts |
